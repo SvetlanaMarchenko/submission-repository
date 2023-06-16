@@ -1,11 +1,3 @@
-#!/usr/bin/env node
-console.log("Hello, world!");
-const x = 1
-let y = 5
-
-console.log(x, y)   // 1, 5 are printed
-y += 10
-console.log(x, y)   // 1, 15 are printed
-y = 'sometext'
-console.log(x, y)   // 1, sometext are printed
-x = 4               // causes an error
+const square = p => p * p
+const t = [1, 2, 3]
+const tSquared = t.map(p => p * p)
