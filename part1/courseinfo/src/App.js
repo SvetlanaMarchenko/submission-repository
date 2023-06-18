@@ -17,12 +17,11 @@ const Part = (props) => {
 };
 
 const Content = (props) => {
-  console.log(props)
   return (
     <div>
-      <Part name={props.name1} exercises={props.exercises1} />
-      <Part name={props.name2} exercises={props.exercises2} />
-      <Part name={props.name3} exercises={props.exercises3} />
+      {props.parts.map((part, index) => (
+        <Part key={index} name={part.name} exercises={part.exercises} />
+      ))}
     </div>
   );
 };
@@ -60,15 +59,7 @@ const App = () => {
   return (
     <div>
       <Header course={course} />
-      <Content
-        name1={parts[0].name}
-        exercises1={parts[0].exercises} 
-        name2={parts[1].name}
-        exercises2={parts[1].exercises}
-        name3={parts[2].name}
-        exercises3={parts[2].exercises}
-      />
-
+      <Content parts={parts} />
       <Total exercises={parts[0].exercises + parts[1].exercises + parts[2].exercises} />
     </div>
   );
