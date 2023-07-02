@@ -23,20 +23,24 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
   const [total, setTotal] = useState(0);
+  const [feedbackGiven, setFeedbackGiven] = useState(false);
 
   const handleGoodClick = () => {
     setGood(good + 1);
     setTotal(total + 1);
+    setFeedbackGiven(true);
   };
 
   const handleNeutralClick = () => {
     setNeutral(neutral + 1);
     setTotal(total + 1);
+    setFeedbackGiven(true);
   };
 
   const handleBadClick = () => {
     setBad(bad + 1);
     setTotal(total + 1);
+    setFeedbackGiven(true);
   };
 
   return (
@@ -46,7 +50,11 @@ const App = () => {
       <button onClick={handleNeutralClick}>Neutral</button>
       <button onClick={handleBadClick}>Bad</button>
 
-      <Statistics good={good} neutral={neutral} bad={bad} />
+      {feedbackGiven ? (
+        <Statistics good={good} neutral={neutral} bad={bad} />
+      ) : (
+        <p>No feedback given</p>
+      )}
     </div>
   );
 };
