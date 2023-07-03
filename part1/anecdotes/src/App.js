@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const App = () => {
   const anecdotes = [
@@ -12,7 +12,7 @@ const App = () => {
     'The only way to go fast is to go well.'
   ]
    
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
 
   const getRandomAnecdote = () => {
@@ -26,25 +26,28 @@ const App = () => {
     setVotes(newVotes)
   }
 
+  const mostVotedIndex = votes.indexOf(Math.max(...votes))
+
   return (
     <div>
-      {selected !== null && (
-        <div>
-          <p>{anecdotes[selected]}</p>
-          <p>Votes: {votes[selected]}</p>
-          <button onClick={handleVote}>
-            Vote
-          </button>
-        </div>
-      )}
-      <button onClick={getRandomAnecdote}>
-        Next Anecdote
-      </button>
+      <div>
+        <h1>Anecdote of the day</h1>
+        <p>{anecdotes[selected]}</p>
+        <p>Has {votes[selected]} votes</p>
+        <button onClick={handleVote}>
+          Vote
+        </button>
+        <button onClick={getRandomAnecdote}>
+          Next Anecdote
+        </button>
+      </div>
+      <div>
+        <h1>Anecdote with most votes</h1>
+        <p>{anecdotes[mostVotedIndex]}</p>
+        <p>Has {votes[mostVotedIndex]} votes</p>
+      </div>
     </div>
   )
 }
 
-export default App
-
-
-
+export default App;
