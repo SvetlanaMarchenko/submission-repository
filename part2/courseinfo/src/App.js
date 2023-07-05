@@ -62,7 +62,7 @@ const App = () => {
 
   const Total = (props) => {
     const totalExercises = props.parts.reduce((sum, part) => sum + part.exercises, 0);
-
+    console.log('Total interesting to see', totalExercises, props.parts);
     return (
       <div>
         <p> <strong>total of {totalExercises} exercises</strong></p>
