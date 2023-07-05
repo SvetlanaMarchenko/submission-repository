@@ -17,72 +17,67 @@ const App = () => {
         name: 'State of a component',
         exercises: 14,
         id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       }
     ]
-  }
-  
+  };
+
   const Course = (props) => {
-    console.log(Course, props)
     return (
       <div>
-          <p>
-            {props.id}
-          </p>
+        <p>{props.id}</p>
       </div>
-    )
-  }
+    );
+  };
 
-    const Header = (props) => {
-      console.log("header:", props)
-      return (
-        <div>
-          <h1>{props.course}</h1>
-        </div>
-      )
-    }
+  const Header = (props) => {
+    return (
+      <div>
+        <h1>{props.course}</h1>
+      </div>
+    );
+  };
 
-    const Content = (props) => {
-      return (
-        <div>
-          {props.parts.map((part, index) => (
-            <Part key={index} name={part.name} exercises={part.exercises} />
-          ))}
-        </div>
-      );
-    };
+  const Content = (props) => {
+    return (
+      <div>
+        {props.parts.map((part, index) => (
+          <Part key={index} name={part.name} exercises={part.exercises} />
+        ))}
+      </div>
+    );
+  };
 
-      const Part = (props) => {
-        console.log(props)
-        return (
-          <p>
-            {props.name} {props.exercises}
-          </p>
-        );
-      };
+  const Part = (props) => {
+    return (
+      <p>
+        {props.name} {props.exercises}
+      </p>
+    );
+  };
 
+  const Total = (props) => {
+    const totalExercises = props.parts.reduce((sum, part) => sum + part.exercises, 0);
 
+    return (
+      <div>
+        <p> <strong>total of {totalExercises} exercises</strong></p>
+      </div>
+    );
+  };
 
-      // const Total = (props) => {
-      //   console.log(props)
-      //   return (
-      //     <div>
-      //       <p>
-      //         Number of exercises {props.exercises}
-      //       </p>
-      //     </div>
-      //   )
-      // }
-
-
-
-        return (
-          <div>
-            <Header course={course.name} />
-            <Content parts={course.parts} />
-            <Course course={course} />
-            {/* <Total exercises={course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises} /> */}
-          </div>
-        );
-      };
+  return (
+    <div>
+      <Header course={course.name} />
+      <Content parts={course.parts} />
+      <Course course={course} />
+      <Total parts={course.parts} />
+    </div>
+  );
+};
 
 export default App;
