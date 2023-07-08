@@ -1,7 +1,7 @@
 
 import { useState } from 'react'
 
-const App = (props) => {
+const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas' }
   ]) 
@@ -10,15 +10,21 @@ const App = (props) => {
   const personsToShow = persons
 
   const addPerson = (event) => {
-    event.preventDefault()
-    const newPersonObject = {
-      name: newPerson,
-      important: Math.random() < 0.5,
-    }
+    event.preventDefault();
+    
+    const nameExists = persons.some(person => person.name === newPerson);
   
-    setPersons(persons.concat(newPersonObject))
-    setNewPerson('')
-  }
+    if (nameExists) {
+      alert(`${newPerson} is already added to the phonebook`);
+    } else {
+      const newPersonObject = {
+        name: newPerson,
+        important: Math.random() < 0.5, 
+      };
+      setPersons(persons.concat(newPersonObject));
+      setNewPerson('');
+    }
+  };
 
   return (
     <div>
