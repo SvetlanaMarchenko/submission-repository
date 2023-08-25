@@ -1,5 +1,8 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react'
+
+
+import personService from './persons';
+
 
 const Filter = ({ searchName, setSearchName }) => {
   return (
@@ -41,29 +44,27 @@ const Persons = ({ persons }) => {
   );
 };
 
-
 const App = () => {
   const [persons, setPersons] = useState([]);
-
-  useEffect(() => {
-    axios.get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
-  
   const [searchName, setSearchName] = useState('');
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
 
-
-
-  const personsToShow = persons.filter(person =>
-    person.name.toLowerCase().includes(searchName.toLowerCase())
-  );
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(response => {
+        setPersons(response);
+      })
+      .catch(error => {
+        console.log('Error fetching data:', error);
+      });
+  }, []);
+  
+  useEffect(() => {
+    console.log(persons); // This will log the updated persons array
+  }, [persons]);
+  
 
   const addPerson = event => {
     event.preventDefault();
@@ -71,12 +72,22 @@ const App = () => {
       name: newName,
       number: newNumber
     };
-    setPersons(persons.concat(newPerson));
-    setNewName('');
-    setNewNumber('');
+
+    personService
+      .create(newPerson)
+      .then(response => {
+        setPersons(persons.concat(response));
+        setNewName('');
+        setNewNumber('');
+      })
+      .catch(error => {
+        console.log('Error adding person:', error);
+      });
   };
 
-  
+  const personsToShow = persons.filter(person =>
+    person.name.toLowerCase().includes(searchName.toLowerCase())
+  );
 
   return (
     <div>
