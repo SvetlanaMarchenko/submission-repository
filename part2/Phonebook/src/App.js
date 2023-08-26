@@ -28,7 +28,7 @@ const PersonInfo = ({ addPerson, newName, setNewName, newNumber, setNewNumber })
   );
 };
 
-const Persons = ({ persons }) => {
+const Persons = ({ persons, deletePerson }) => {
   if (persons.length === 0) {
     return <div>Loading...</div>;
   }
@@ -38,6 +38,7 @@ const Persons = ({ persons }) => {
       {persons.map(person => (
         <li key={person.name}>
           {person.name} {person.number}
+          <button onClick={() => deletePerson(person.id, person.name)}>Delete</button>
         </li>
       ))}
     </ul>
@@ -66,6 +67,19 @@ const App = () => {
   }, [persons]);
   
 
+  const deletePerson = (id, personName) => {
+    if (window.confirm(`Delete '${personName}'?`)) {
+      personService
+        .deletePersonInfo(id)
+          .then(() => {
+            setPersons(persons.filter(person => person.id !== id));
+          })
+          .catch(error => {
+            console.log('Error deleting person:', error);
+          });
+    }
+  };
+
   const addPerson = event => {
     event.preventDefault();
     const newPerson = {
@@ -77,7 +91,7 @@ const App = () => {
       .create(newPerson)
       .then(response => {
         setPersons(persons.concat(response));
-        setNewName('');
+        setNewName(''); 
         setNewNumber('');
       })
       .catch(error => {
@@ -89,11 +103,15 @@ const App = () => {
     person.name.toLowerCase().includes(searchName.toLowerCase())
   );
 
+
+
+
   return (
     <div>
       <h2>Phonebook</h2>
 
       <Filter searchName={searchName} setSearchName={setSearchName} />
+
 
       <h3>Add a new</h3>
 
@@ -107,9 +125,9 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} deletePerson={deletePerson}/>
     </div>
   );
 };
 
-export default App;
+export default App
