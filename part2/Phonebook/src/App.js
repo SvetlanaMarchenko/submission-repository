@@ -90,20 +90,15 @@ const App = () => {
   };
 
   const replaceInfoPerson = (name, newNumber) => {
-    // Находим существующего человека по имени в массиве persons
     const existingPerson = persons.find(person => person.name === name);
-  
-    // Проверяем, хочет ли пользователь заменить номер
+
     if (window.confirm(`'${name}' is already added to the phonebook, replace the old number with the new one?`)) {
       if (existingPerson) {
-        // Создаем обновленный объект контакта с новым номером
         const updatedPerson = { ...existingPerson, number: newNumber };
   
-        // Вызываем метод update у personService для обновления на сервере
         personService
           .update(existingPerson.id, updatedPerson)
           .then(returnedPerson => {
-            // Обновляем состояние persons после успешного обновления на сервере
             setPersons(persons.map(person => (person.id === returnedPerson.id ? returnedPerson : person)));
             setNewName('');
             setNewNumber('');
