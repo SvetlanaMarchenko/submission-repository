@@ -12,7 +12,13 @@ const Filter = ({ searchName, setSearchName }) => {
   );
 };
 
-const PersonInfo = ({ addPerson, newName, setNewName, newNumber, setNewNumber }) => {
+const PersonInfo = ({ addPerson, newName, setNewName, newNumber, setNewNumber, replaceInfoPerson, persons }) => {
+  const handleNumberChange = (event) => {
+    const newNumberValue = event.target.value;
+
+      setNewNumber(newNumberValue);
+  };
+
   return (
     <form onSubmit={addPerson}>
       <div>
@@ -27,6 +33,9 @@ const PersonInfo = ({ addPerson, newName, setNewName, newNumber, setNewNumber })
     </form>
   );
 };
+
+
+
 
 const Persons = ({ persons, deletePerson }) => {
   if (persons.length === 0) {
@@ -80,6 +89,34 @@ const App = () => {
     }
   };
 
+  const replaceInfoPerson = (name, newNumber) => {
+    // Находим существующего человека по имени в массиве persons
+    const existingPerson = persons.find(person => person.name === name);
+  
+    // Проверяем, хочет ли пользователь заменить номер
+    if (window.confirm(`'${name}' is already added to the phonebook, replace the old number with the new one?`)) {
+      if (existingPerson) {
+        // Создаем обновленный объект контакта с новым номером
+        const updatedPerson = { ...existingPerson, number: newNumber };
+  
+        // Вызываем метод update у personService для обновления на сервере
+        personService
+          .update(existingPerson.id, updatedPerson)
+          .then(returnedPerson => {
+            // Обновляем состояние persons после успешного обновления на сервере
+            setPersons(persons.map(person => (person.id === returnedPerson.id ? returnedPerson : person)));
+            setNewName('');
+            setNewNumber('');
+          })
+          .catch(error => {
+            console.log('Error replacing number:', error);
+          });
+      }
+    }
+  };
+  
+  
+
   const addPerson = event => {
     event.preventDefault();
     const newPerson = {
@@ -104,8 +141,6 @@ const App = () => {
   );
 
 
-
-
   return (
     <div>
       <h2>Phonebook</h2>
@@ -121,11 +156,14 @@ const App = () => {
         setNewName={setNewName}
         newNumber={newNumber}
         setNewNumber={setNewNumber}
+        replaceInfoPerson={replaceInfoPerson}
+        persons={persons}
       />
 
       <h3>Numbers</h3>
 
       <Persons persons={personsToShow} deletePerson={deletePerson}/>
+
     </div>
   );
 };

@@ -28,6 +28,7 @@ const deletePersonInfo = (id) => {
   return request.then(response => response.data)
 }
 
+
 export default { 
   getAll, 
   create, 
