@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
+import Notification from './Notification'
 
 
 import personService from './persons';
+import './index.css'
 
 
 const Filter = ({ searchName, setSearchName }) => {
   return (
     <div>
-      Search: <input value={searchName} onChange={(event) => setSearchName(event.target.value)} />
+      filter shown with <input value={searchName} onChange={(event) => setSearchName(event.target.value)} />
     </div>
   );
 };
@@ -59,6 +61,7 @@ const App = () => {
   const [searchName, setSearchName] = useState('');
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [AddedMessage, setAddedMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -123,6 +126,12 @@ const App = () => {
       .create(newPerson)
       .then(response => {
         setPersons(persons.concat(response));
+        setAddedMessage(
+          `Added ${newPerson.name}`
+        )
+        setTimeout(() => {
+          setAddedMessage()
+        }, 5000)
         setNewName(''); 
         setNewNumber('');
       })
@@ -139,6 +148,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={AddedMessage} />
 
       <Filter searchName={searchName} setSearchName={setSearchName} />
 
