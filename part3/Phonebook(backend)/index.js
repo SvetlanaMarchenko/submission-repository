@@ -36,6 +36,23 @@ app.get('/api/persons', (req, res) => {
   res.json(persons)
 })
 
+app.use((req, res, next) => {
+  morgan.token('person', (req) => {
+    if (req.method === 'POST') {
+      const body = req.body;
+      if (body) {
+        const s = JSON.stringify(body);
+        return s;
+      }
+    }
+    return '';
+  });
+
+  next();
+});
+
+app.use(morgan(':method :url :status :response-time ms - :person')); 
+
 const generateId = () => {
   const maxId = persons.length > 0
     ? Math.max(...persons.map(n => n.id))
