@@ -26,13 +26,13 @@ let persons = [
     }
 ]
 
-app.get('/', (req, res) => {
-  res.send('<h1>Phonebook has info for "{lenght.id}" </h1>')
+app.get('/info', (req, res) => {
+  res.send(`<p1>Phonebook has info for ${persons.length} persons</p1> <div>${new Date()}</div>`)
 })
 
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
-})
+// app.get('/api/info', (req, res) => {
+//   res.json(send)
+// })
 
 const generateId = () => {
   const maxId = persons.length > 0
