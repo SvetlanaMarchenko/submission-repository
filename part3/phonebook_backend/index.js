@@ -1,12 +1,23 @@
 const express = require('express');
-const morgan = require('morgan'); 
-
 const app = express();
 const cors = require('cors');
 
-app.use(express.json());
-app.use(morgan('dev'));
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
 app.use(cors())
+app.use(express.json())
+app.use(unknownEndpoint)
+app.use(requestLogger)
 
 let persons = [
   { 
@@ -54,7 +65,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(morgan(':method :url :status :response-time ms - :person')); 
 
 const generateId = () => {
   const maxId = persons.length > 0
