@@ -1,10 +1,7 @@
 import { useState, useEffect } from 'react'
 import Notification from './Notification'
-
-
 import personService from './persons';
 import './index.css'
-
 
 const Filter = ({ searchName, setSearchName }) => {
   return (

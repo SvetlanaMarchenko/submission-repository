@@ -16,8 +16,8 @@ const unknownEndpoint = (request, response) => {
 
 app.use(cors())
 app.use(express.json())
-app.use(unknownEndpoint)
 app.use(requestLogger)
+app.use(express.static('fontend-dist'))
 
 let persons = [
   { 
@@ -114,6 +114,8 @@ app.delete('/api/persons/:id', (request, response) => {
 
   response.status(204).end()
 })
+
+app.use(unknownEndpoint)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
