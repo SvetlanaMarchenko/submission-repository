@@ -50,20 +50,20 @@ app.get('/api/persons', (req, res) => {
   res.json(persons)
 })
 
-app.use((req, res, next) => {
-  morgan.token('person', (req) => {
-    if (req.method === 'POST') {
-      const body = req.body;
-      if (body) {
-        const s = JSON.stringify(body);
-        return s;
-      }
-    }
-    return '';
-  });
+// app.use((req, res, next) => {
+//   morgan.token('person', (req) => {
+//     if (req.method === 'POST') {
+//       const body = req.body;
+//       if (body) {
+//         const s = JSON.stringify(body);
+//         return s;
+//       }
+//     }
+//     return '';
+//   });
 
-  next();
-});
+//   next();
+// });
 
 
 const generateId = () => {
