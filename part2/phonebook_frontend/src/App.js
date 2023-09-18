@@ -137,10 +137,9 @@ const App = () => {
       });
   };
 
-  const personsToShow = persons.filter(person =>
+  const personsToShow = persons.filter(person => {
     person.name.toLowerCase().includes(searchName.toLowerCase())
-  );
-
+  });
 
   return (
     <div>
