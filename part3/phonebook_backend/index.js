@@ -39,22 +39,26 @@ const generateId = () => {
 }
 
 app.post('/api/persons', (request, response) => {
-  const body = request.body
+  const body = request.body;
 
-  if (body.content === undefined) {
-    return response.status(400).json({ error: 'content missing' })
+  if (!body.name || !body.number) {
+    return response.status(400).json({ error: 'name or number missing' });
   }
 
   const person = new Person({
-    id: generateId(),
     name: body.name,
-    number: body.number,  
-  })
+    number: body.number,
+  });
 
-  note.save().then(savedPerson => {
-    response.json(savedPerson)
-  })
-})
+  person.save().then(savedPerson => {
+    response.json(savedPerson);
+  }).catch(error => {
+    console.log('Error saving person:', error);
+    response.status(500).json({ error: 'internal server error' });
+  });
+});
+
+
 
 app.get('/api/persons/:id', (request, response) => {
   Person.findById(request.params.id).then(person => {
