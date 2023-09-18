@@ -17,10 +17,25 @@ mongoose.connect(url)
     console.log('error connecting to MongoDB:', error.message)
   })
 
-const personSchema = new mongoose.Schema({
-  name: String,
-  number: String,
-})
+  const personSchema = new mongoose.Schema({
+    name: {
+      type: String,
+      minlength: [3],
+      required: true
+    },
+
+    number: {
+      type: String,
+      validate: {
+        validator: function (value) {
+          return /^\d{2,3}-\d{7,8}$/.test(value);
+        },
+        message: 'Invalid phone number format, should be XX-XXXXXXXX or XXX-XXXXXXXX.'
+      },
+      required: true
+    }
+  })
+
 
 personSchema.set('toJSON', {
   transform: (document, returnedObject) => {

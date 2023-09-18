@@ -59,6 +59,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [AddedMessage, setAddedMessage] = useState(null)
+  const [AddedNegMessage, setAddedNegMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -133,20 +134,27 @@ const App = () => {
         setNewNumber('');
       })
       .catch(error => {
-        console.log('Error adding person:', error);
+        console.log(error.response.data.error);
+        setAddedNegMessage(
+          error.response.data.error
+        )
+        setTimeout(() => {
+          setAddedNegMessage()
+        }, 5000)
       });
   };
 
-  const personsToShow = persons.filter(person => {
+  const personsToShow = persons.filter(person =>
     person.name.toLowerCase().includes(searchName.toLowerCase())
-  });
+  );
+
 
   return (
     <div>
       <h2>Phonebook</h2>
       <Notification message={AddedMessage} />
 
-      <Filter searchName={searchName} setSearchName={setSearchName} />
+      <Filter searchName={searchName} setSearchName={setSearchName} className="positive-message"  />
 
 
       <h3>Add a new</h3>
@@ -163,6 +171,7 @@ const App = () => {
 
       <h3>Numbers</h3>
 
+      <Notification message={AddedNegMessage} className="negative-message"/>
       <Persons persons={personsToShow} deletePerson={deletePerson}/>
 
     </div>

@@ -32,7 +32,7 @@ const errorHandler = (error, request, response, next) => {
 app.use(cors())
 app.use(express.json())
 app.use(requestLogger)
-app.use(express.static('build'))
+app.use(express.static('frontend-dist'))
 
 app.get('/api/notes', (request, response) => {
   Note.find({}).then(notes => {
