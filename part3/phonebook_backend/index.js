@@ -1,8 +1,8 @@
-const express = require('express');
-const app = express();
-const cors = require('cors');
-require('dotenv').config();
-const Person = require('./models/person');
+const express = require('express')
+const app = express()
+const cors = require('cors')
+require('dotenv').config()
+const Person = require('./models/person')
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -55,12 +55,12 @@ app.post('/api/persons', (request, response, next) => {
     .catch(error => next(error))
 })
 
-const generateId = () => {
-  const maxId = persons.length > 0
-    ? Math.max(...persons.map(n => n.id))
-    : 0
-  return maxId + 1
-}
+// const generateId = () => {
+//   const maxId = persons.length > 0
+//     ? Math.max(...persons.map(n => n.id))
+//     : 0
+//   return maxId + 1
+// }
 
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -77,7 +77,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -87,10 +87,10 @@ app.put('/api/persons/:id', (request, response, next) => {
   const { name, number } = request.body
 
   Person.findByIdAndUpdate(
-    request.params.id, 
+    request.params.id,
     { name, number },
     { new: true, runValidators: true, context: 'query' }
-  ) 
+  )
     .then(updatedPerson => {
       response.json(updatedPerson)
     })
