@@ -10,7 +10,7 @@
     "deploy": "render deploy",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
     "logs:prod": "render logs",
-    "lint": "eslint"
+    "lint": "eslint ."
   },
   "author": "",
   "license": "ISC",

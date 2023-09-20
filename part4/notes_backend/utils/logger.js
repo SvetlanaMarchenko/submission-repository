@@ -1,21 +1,11 @@
 const info = (...params) => {
-    console.log(...params)
-  }
-  
-  const error = (...params) => {
-    console.error(...params)
-  }
-  
-  module.exports = {
-    info, error
-  }
+  console.log(...params)
+}
 
-require('dotenv').config()
-
-const PORT = process.env.PORT
-const MONGODB_URI = process.env.MONGODB_URI
+const error = (...params) => {
+  console.error(...params)
+}
 
 module.exports = {
-MONGODB_URI,
-PORT
+  info, error
 }
