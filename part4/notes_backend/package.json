@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "build:ui": "rm -rf frontend-dist/* && cd ../../part2/notes_frontend/ && npm run build && cp -r ./build/* ../../part4/notes_backend/frontend-dist/",
+    "deploy": "render deploy",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
+    "logs:prod": "render logs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
