@@ -9,7 +9,8 @@
     "build:ui": "rm -rf frontend-dist/* && cd ../../part2/notes_frontend/ && npm run build && cp -r ./build/* ../../part4/notes_backend/frontend-dist/",
     "deploy": "render deploy",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
-    "logs:prod": "render logs"
+    "logs:prod": "render logs",
+    "lint": "eslint"
   },
   "author": "",
   "license": "ISC",
