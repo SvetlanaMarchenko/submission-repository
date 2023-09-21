@@ -1,6 +1,6 @@
 import axios from 'axios'
-// const baseUrl = 'http://localhost:3001/api/persons'
-const baseUrl = '/api/persons'
+const baseUrl = 'http://localhost:3001/api/bloglists'
+// const baseUrl = '/api/bloglists'
 
 const getAll = () => {
   const request = axios.get(baseUrl)
@@ -24,7 +24,7 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-const deletePersonInfo = (id) => {
+const deleteBloglistInfo = (id) => {
   const request = axios.delete(`${baseUrl}/${id}`)
   return request.then(response => response.data)
 }
@@ -34,5 +34,5 @@ export default {
   getAll, 
   create, 
   update,
-  deletePersonInfo
+  deleteBloglistInfo
 }

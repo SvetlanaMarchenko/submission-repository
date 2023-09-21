@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Notification from './Notification'
-import personService from './persons';
+import bloglistService from './bloglists';
 import './index.css'
 
 const Filter = ({ searchName, setSearchName }) => {
@@ -11,7 +11,7 @@ const Filter = ({ searchName, setSearchName }) => {
   );
 };
 
-const PersonInfo = ({ addPerson, newName, setNewName, newNumber, setNewNumber, replaceInfoPerson, persons }) => {
+const BloglistInfo = ({ addBloglist, newName, setNewName, newNumber, setNewNumber, replaceInfoBloglist, bloglists }) => {
   const handleNumberChange = (event) => {
     const newNumberValue = event.target.value;
 
@@ -19,7 +19,7 @@ const PersonInfo = ({ addPerson, newName, setNewName, newNumber, setNewNumber, r
   };
 
   return (
-    <form onSubmit={addPerson}>
+    <form onSubmit={addBloglist}>
       <div>
         name: <input value={newName} onChange={(event) => setNewName(event.target.value)} />
       </div>
@@ -36,17 +36,17 @@ const PersonInfo = ({ addPerson, newName, setNewName, newNumber, setNewNumber, r
 
 
 
-const Persons = ({ persons, deletePerson }) => {
-  if (persons.length === 0) {
+const Bloglists = ({ bloglists, deleteBloglist }) => {
+  if (bloglists.length === 0) {
     return <div>Loading...</div>;
   }
 
   return (
     <ul>
-      {persons.map(person => (
-        <li key={person.name}>
-          {person.name} {person.number}
-          <button onClick={() => deletePerson(person.id, person.name)}>Delete</button>
+      {bloglists.map(bloglist => (
+        <li key={bloglist.name}>
+          {bloglist.name} {bloglist.number}
+          <button onClick={() => deleteBloglist(bloglist.id, bloglist.name)}>Delete</button>
         </li>
       ))}
     </ul>
@@ -54,7 +54,7 @@ const Persons = ({ persons, deletePerson }) => {
 };
 
 const App = () => {
-  const [persons, setPersons] = useState([]);
+  const [bloglists, setBloglist] = useState([]);
   const [searchName, setSearchName] = useState('');
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
@@ -62,10 +62,10 @@ const App = () => {
   const [AddedNegMessage, setAddedNegMessage] = useState(null)
 
   useEffect(() => {
-    personService
+    bloglistService
       .getAll()
       .then(response => {
-        setPersons(response);
+        setBloglist(response);
       })
       .catch(error => {
         console.log('Error fetching data:', error);
@@ -73,34 +73,34 @@ const App = () => {
   }, []);
   
   useEffect(() => {
-    console.log(persons); // This will log the updated persons array
-  }, [persons]);
+    console.log(bloglists); // This will log the updated bloglists array
+  }, [bloglists]);
   
 
-  const deletePerson = (id, personName) => {
-    if (window.confirm(`Delete '${personName}'?`)) {
-      personService
-        .deletePersonInfo(id)
+  const deleteBloglist = (id, bloglistName) => {
+    if (window.confirm(`Delete '${bloglistName}'?`)) {
+      bloglistService
+        .deleteBloglistInfo(id)
           .then(() => {
-            setPersons(persons.filter(person => person.id !== id));
+            setBloglist(bloglists.filter(bloglist => bloglist.id !== id));
           })
           .catch(error => {
-            console.log('Error deleting person:', error);
+            console.log('Error deleting bloglist:', error);
           });
     }
   };
 
-  const replaceInfoPerson = (name, newNumber) => {
-    const existingPerson = persons.find(person => person.name === name);
+  const replaceInfoBloglist = (name, newNumber) => {
+    const existingBloglist = bloglists.find(bloglist => bloglist.name === name);
 
     if (window.confirm(`'${name}' is already added to the phonebook, replace the old number with the new one?`)) {
-      if (existingPerson) {
-        const updatedPerson = { ...existingPerson, number: newNumber };
+      if (existingBloglist) {
+        const updatedBloglist = { ...existingBloglist, number: newNumber };
   
-        personService
-          .update(existingPerson.id, updatedPerson)
-          .then(returnedPerson => {
-            setPersons(persons.map(person => (person.id === returnedPerson.id ? returnedPerson : person)));
+        bloglistService
+          .update(existingBloglist.id, updatedBloglist)
+          .then(returnedBloglist => {
+            setBloglist(bloglists.map(bloglist => (bloglist.id === returnedBloglist.id ? returnedBloglist : bloglist)));
             setNewName('');
             setNewNumber('');
           })
@@ -113,19 +113,19 @@ const App = () => {
   
   
 
-  const addPerson = event => {
+  const addBloglist = event => {
     event.preventDefault();
-    const newPerson = {
+    const newBloglist = {
       name: newName,
       number: newNumber
     };
 
-    personService
-      .create(newPerson)
+    bloglistService
+      .create(newBloglist)
       .then(response => {
-        setPersons(persons.concat(response));
+        setBloglist(bloglists.concat(response));
         setAddedMessage(
-          `Added ${newPerson.name}`
+          `Added ${newBloglist.name}`
         )
         setTimeout(() => {
           setAddedMessage()
@@ -144,8 +144,8 @@ const App = () => {
       });
   };
 
-  const personsToShow = persons.filter(person =>
-    person.name.toLowerCase().includes(searchName.toLowerCase())
+  const bloglistsToShow = bloglists.filter(bloglist =>
+    bloglist.name.toLowerCase().includes(searchName.toLowerCase())
   );
 
 
@@ -159,20 +159,20 @@ const App = () => {
 
       <h3>Add a new</h3>
 
-      <PersonInfo
-        addPerson={addPerson}
+      <BloglistInfo
+        addBloglist={addBloglist}
         newName={newName}
         setNewName={setNewName}
         newNumber={newNumber}
         setNewNumber={setNewNumber}
-        replaceInfoPerson={replaceInfoPerson}
-        persons={persons}
+        replaceInfoBloglist={replaceInfoBloglist}
+        bloglists={bloglists}
       />
 
       <h3>Numbers</h3>
 
       <Notification message={AddedNegMessage} className="negative-message"/>
-      <Persons persons={personsToShow} deletePerson={deletePerson}/>
+      <Bloglists bloglists={bloglistsToShow} deleteBloglist={deleteBloglist}/>
 
     </div>
   );

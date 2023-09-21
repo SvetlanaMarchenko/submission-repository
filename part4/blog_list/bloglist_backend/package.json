@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build:ui": "rm -rf frontend-dist/* && cd ../../part2/phonebook_frontend/ && npm run build && cp -r ./build/* ../../part4/phonebook_backend/frontend-dist/",
+    "build:ui": "rm -rf frontend-dist/* && cd ../../part4/blog_list/bloglist_frontend/ && npm run build && cp -r ./build/* ../../part4/blog_list/bloglist_backend/frontend-dist/",
     "deploy": "render deploy",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push",
     "logs:prod": "render logs",

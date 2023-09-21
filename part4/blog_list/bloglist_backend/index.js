@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 require('dotenv').config()
-const Person = require('./models/person')
+const Bloglist = require('./models/bloglist')
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -34,40 +34,40 @@ app.use(requestLogger)
 app.use(express.static('frontend-dist'))
 
 
-app.get('/api/persons', (request, response) => {
-  Person.find({}).then(persons => {
-    response.json(persons)
+app.get('/api/bloglist', (request, response) => {
+  Bloglist.find({}).then(bloglists => {
+    response.json(bloglists)
   })
 })
 
 
-app.post('/api/persons', (request, response, next) => {
+app.post('/api/bloglists', (request, response, next) => {
   const body = request.body
-  const person = new Person({
+  const bloglist = new Bloglist({
     name: body.name,
     number: body.number,
   });
 
-  person.save()
-    .then(savedPerson => {
-      response.json(savedPerson)
+  bloglist.save()
+    .then(savedBloglist => {
+      response.json(savedBloglist)
     })
     .catch(error => next(error))
 })
 
 // const generateId = () => {
-//   const maxId = persons.length > 0
-//     ? Math.max(...persons.map(n => n.id))
+//   const maxId = bloglists.length > 0
+//     ? Math.max(...bloglists.map(n => n.id))
 //     : 0
 //   return maxId + 1
 // }
 
 
-app.get('/api/persons/:id', (request, response, next) => {
-  Person.findById(request.params.id)
-    .then(person => {
-      if (person) {
-        response.json(person)
+app.get('/api/bloglists/:id', (request, response, next) => {
+  Bloglist.findById(request.params.id)
+    .then(bloglist => {
+      if (bloglist) {
+        response.json(bloglist)
       } else {
         response.status(404).end()
       }
@@ -75,24 +75,24 @@ app.get('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response, next) => {
-  Person.findByIdAndRemove(request.params.id)
+app.delete('/api/bloglists/:id', (request, response, next) => {
+  Bloglist.findByIdAndRemove(request.params.id)
     .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
 })
 
-app.put('/api/persons/:id', (request, response, next) => {
+app.put('/api/bloglists/:id', (request, response, next) => {
   const { name, number } = request.body
 
-  Person.findByIdAndUpdate(
+  Bloglist.findByIdAndUpdate(
     request.params.id,
     { name, number },
     { new: true, runValidators: true, context: 'query' }
   )
-    .then(updatedPerson => {
-      response.json(updatedPerson)
+    .then(updatedBloglist => {
+      response.json(updatedBloglist)
     })
     .catch(error => next(error))
 })
