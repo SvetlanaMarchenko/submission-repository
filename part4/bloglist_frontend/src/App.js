@@ -151,7 +151,7 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2>Bloglist</h2>
       <Notification message={AddedMessage} />
 
       <Filter searchName={searchName} setSearchName={setSearchName} className="positive-message"  />

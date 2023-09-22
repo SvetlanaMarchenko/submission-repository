@@ -34,7 +34,7 @@ app.use(requestLogger)
 app.use(express.static('frontend-dist'))
 
 
-app.get('/api/bloglist', (request, response) => {
+app.get('/api/bloglists', (request, response) => {
   Bloglist.find({}).then(bloglists => {
     response.json(bloglists)
   })
