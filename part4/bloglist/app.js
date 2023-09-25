@@ -28,15 +28,6 @@ app.use('/api/blogs', blogsRouter)
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
-const PORT = 3003
-app.listen(config.PORT, () => {
-  logger.info(`Server running on port ${config.PORT}`)
-})
 
-
-// const PORT = 3003
-// app.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`)
-// })
 
 module.exports = app
