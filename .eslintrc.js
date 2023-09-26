@@ -25,7 +25,7 @@ module.exports = {
   'rules': {
     'indent': [
       'error',
-      2 // Используйте 2 пробела для отступов (или другое желаемое значение)
+      tub
     ],
     'linebreak-style': [
       'error',
