@@ -9,15 +9,11 @@ const helper = require('./test_helper')
 
 beforeEach(async () => {
   await Note.deleteMany({})
-
-  let noteObject = new Note(helper.initialNotes[0])
-  await noteObject.save()
-
-  noteObject = new Note(helper.initialNotes[1])
-  await noteObject.save()
+  await Note.insertMany(helper.initialNotes)
 })
 
 test('notes are returned as json', async () => {
+  console.log('entered test')
   await api
     .get('/api/notes')
     .expect(200)
@@ -34,7 +30,7 @@ test('a specific note is within the returned notes', async () => {
   const response = await api.get('/api/notes')
 
   const contents = response.body.map(r => r.content)
-
+]
   expect(contents).toContain(
     'Browser can execute only JavaScript'
   )
