@@ -2,23 +2,23 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Note.find({})
+  const blogs = await Blog.find({})
   response.json(blogs)
 })
-
 
 blogsRouter.post('/', (request, response, next) => {
   const body = request.body
 
   const blog = new Blog({
-    content: body.content,
-    important: body.important || false,
-    date: new Date()
+    title: "async/await блог",
+    author: "Автор блога async/await",
+    url: "https://async/await.com",
+    likes: 182
   })
 
   blog.save()
     .then(savedBlog => {
-      response.json(savedBlog)
+      response.status(201).json(savedBlog)
     })
     .catch(error => next(error))
 })
