@@ -6,7 +6,7 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-blogsRouter.post('/', async (request, response, next) => {
+blogsRouter.post('/', async (request, response) => {
   const body = request.body
 
   const blog = new Blog({
@@ -17,29 +17,32 @@ blogsRouter.post('/', async (request, response, next) => {
   })
   const savedBlog = await blog.save()
   response.status(201).json(savedBlog)
-  })
-  try {
-    const savedBlog = await blog.save()
-    response.status(201).json(savedBlog)
-  } catch(exception) {
-    next(exception)
+})
+
+
+blogsRouter.get('/:id', async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+  if (blog) {
+    response.json(blog)
+  } else {
+    response.status(404).end()
   }
+})
 
 
-blogsRouter.delete('/:id', (request, response, next) => {
-  Blog.findByIdAndRemove(request.params.id)
-    .then(() => {
-      response.status(204).end()
-    })
-    .catch(error => next(error))
+blogsRouter.delete('/:id', async (request, response) => {
+  await Blog.findByIdAndRemove(request.params.id)
+  response.status(204).end()
 })
 
 blogsRouter.put('/:id', (request, response, next) => {
   const body = request.body
 
   const blog = {
-    content: body.content,
-    important: body.important,
+    title: "Новый put блог",
+    author: "Автор блога put",
+    url: "https:put.com",
+    likes: 1777
   }
 
   Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
