@@ -4,16 +4,18 @@ const Blog = require('../models/blog')
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
   response.json(blogs)
-})
+})  
+
+
 
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
 
   const blog = new Blog({
-    title: "async/await блог",
-    author: "Автор блога async/await",
-    url: "https://async/await.com",
-    likes: 182
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes
   })
   const savedBlog = await blog.save()
   response.status(201).json(savedBlog)
@@ -38,12 +40,12 @@ blogsRouter.delete('/:id', async (request, response) => {
 blogsRouter.put('/:id', (request, response, next) => {
   const body = request.body
 
-  const blog = {
-    title: "Новый put блог",
-    author: "Автор блога put",
-    url: "https:put.com",
-    likes: 1777
-  }
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes
+  })
 
   Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
     .then(updatedBlog => {
