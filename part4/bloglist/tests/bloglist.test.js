@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
+const helper = require('../tests/test_helper');
 
 const Blog = require('../models/blog')
 const initialBlogs = [
@@ -59,6 +60,29 @@ test('blogs have an id', async () => {
   blogs.forEach(blog => {
     expect(blog.id).toBeDefined()
   })
+})
+
+test('added a new blog', async () => {
+  const newBlog = {
+      "title": "added a new blog",
+      "author": "added a new blog",
+      "url": "https://added_a_new_blog.com",
+      "likes": 200
+    }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  const titles = blogsAtEnd.map(n => n.title)
+  expect(titles).toContain(
+    'added a new blog'
+  )
 })
 
 afterAll(async () => {
