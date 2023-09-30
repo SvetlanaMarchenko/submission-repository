@@ -62,6 +62,25 @@ test('blogs have an id', async () => {
   })
 })
 
+test('default likes value is 0 when not provided', async () => {
+  const newBlogWithoutLikes = {
+    title: "Blog without likes",
+    author: "Author without likes",
+    url: "https://example.com"
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlogWithoutLikes)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const createdBlog = response.body
+  expect(createdBlog.likes).toBeDefined()
+  expect(createdBlog.likes).toBe(0)
+})
+
+
 test('added a new blog', async () => {
   const newBlog = {
       "title": "added a new blog",
