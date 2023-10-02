@@ -40,21 +40,27 @@ blogsRouter.delete('/:id', async (request, response) => {
   response.status(204).end()
 })
 
-blogsRouter.put('/:id', (request, response, next) => {
-  const body = request.body
+// Обновление блога
+blogsRouter.put('/:id', async (request, response) => {
+  const { id } = request.params;
+  const updatedBlog = request.body;
 
-  const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes
-  })
+  try {
+    // Найдите блог по id и обновите его
+    const updatedBlogResult = await Blog.findByIdAndUpdate(id, updatedBlog, {
+      new: true, // Этот параметр возвращает обновленный блог в ответе
+    });
 
-  Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-    .then(updatedBlog => {
-      response.json(updatedBlog)
-    })
-    .catch(error => next(error))
-})
+    if (!updatedBlogResult) {
+      return response.status(404).json({ error: 'Blog not found' });
+    }
+
+    response.json(updatedBlogResult);
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 module.exports = blogsRouter
