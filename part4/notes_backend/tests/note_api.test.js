@@ -72,7 +72,7 @@ describe('when there is initially some notes saved', () => {
     test('succeeds with valid data', async () => {
       const newNote = {
         content: 'async/await simplifies making async calls',
-        important: true,
+        important: true
       }
 
       await api
