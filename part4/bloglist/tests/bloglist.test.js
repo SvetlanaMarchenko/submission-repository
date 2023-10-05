@@ -145,6 +145,41 @@ describe('updating a blog', () => {
     expect(updatedBlogInDb.likes).toBe(updatedLikes)
   })
 })
+test('creating a user with invalid username or password fails', async () => {
+  const invalidUser = [
+    { username: 'ab', password: 'validpassword' },
+    { username: 'validusername', password: 'ab' },
+  ];
+
+  const promises = invalidUser.map((user) => {
+    return api
+      .post('/api/users')
+      .send(user)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+  });
+
+  await Promise.all(promises);
+});
+
+test('creating a user with a non-unique username fails', async () => {
+  const newUser = {
+    username: 'testuser',
+    password: 'validpassword',
+  };
+
+  // Create a user with the same username
+  await api.post('/api/users').send(newUser);
+
+  const response = await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(400)
+    .expect('Content-Type', /application\/json/);
+
+  expect(response.body.error).toContain('unique');
+});
+
 
 
 afterAll(async () => {
