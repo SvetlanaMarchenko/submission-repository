@@ -68,11 +68,4 @@ blogsRouter.put('/:id', async (request, response) => {
     response.status(500).json({ error: 'Internal Server Error' });
   }
 })
-  // Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-  //   .then(updatedBlog => {
-  //     response.json(updatedBlog)
-  //   })
-  //   .catch(error => next(error))
-
-
 module.exports = blogsRouter
