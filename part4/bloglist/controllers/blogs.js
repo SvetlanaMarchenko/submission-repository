@@ -3,9 +3,11 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({})
+  const blogs = await Blog
+    .find({}).populate('user', { username: 1, name: 1 })
+
   response.json(blogs)
-})  
+})
 
 blogsRouter.post('/', async (request, response) => {
   const body = request.body;
@@ -65,7 +67,12 @@ blogsRouter.put('/:id', async (request, response) => {
     console.error(error);
     response.status(500).json({ error: 'Internal Server Error' });
   }
-});
+})
+  // Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  //   .then(updatedBlog => {
+  //     response.json(updatedBlog)
+  //   })
+  //   .catch(error => next(error))
 
 
 module.exports = blogsRouter
