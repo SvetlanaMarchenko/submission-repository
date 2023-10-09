@@ -12,7 +12,7 @@ content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY1MWJkZjBjMjBhNmI1ZWY3MDk3YmViYiIsImlhdCI6MTY5NjQ5NzY5NX0.BQCKtdmqCG3xGvqDNOhP7LbUb-evN3XjT_L7FK06oZw
 
 {
-    "content": "заметка с токеном 222222222",
+    "content": "Новая заметка с Артёмом",
     "important": true,
     "userId": "651bdf0c20a6b5ef7097bebb"
 }

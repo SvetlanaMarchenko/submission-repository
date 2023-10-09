@@ -3,15 +3,15 @@ import Notification from './Notification'
 import blogsService from './blogs';
 import './index.css'
 
-const Filter = ({ searchName, setSearchName }) => {
+const Filter = ({searchTitle, setSearchTitle }) => {
   return (
     <div>
-      filter shown with <input value={searchName} onChange={(event) => setSearchName(event.target.value)} />
+      filter shown with <input value={searchTitle} onChange={(event) => setSearchTitle(event.target.value)} />
     </div>
   );
 };
 
-const BlogInfo = ({ addBlog: addBlog, newName, setNewName, newNumber, setNewNumber, replaceInfoBlog: replaceInfoBlog, blogs }) => {
+const BlogInfo = ({ addBlog: addBlog, newTitle, setNewTitle, newNumber, setNewNumber, replaceInfoBlog: replaceInfoBlog, blogs }) => {
   const handleNumberChange = (event) => {
     const newNumberValue = event.target.value;
 
@@ -21,7 +21,7 @@ const BlogInfo = ({ addBlog: addBlog, newName, setNewName, newNumber, setNewNumb
   return ( 
     <form onSubmit={addBlog}>
       <div>
-        name: <input value={newName} onChange={(event) => setNewName(event.target.value)} />
+        title: <input value={newTitle} onChange={(event) => setNewTitle(event.target.value)} />
       </div>
       <div>
         number: <input value={newNumber} onChange={(event) => setNewNumber(event.target.value)} />
@@ -55,8 +55,8 @@ const BlogInfo = ({ addBlog: addBlog, newName, setNewName, newNumber, setNewNumb
 
 const App = () => {
   const [blogs, setBlog] = useState([]);
-  const [searchName, setSearchName] = useState('');
-  const [newName, setNewName] = useState('');
+  const [searchTitle, setSearchTitle] = useState('');
+  const [newTitle, setNewTitle] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [AddedMessage, setAddedMessage] = useState(null)
   const [AddedNegMessage, setAddedNegMessage] = useState(null)
@@ -77,8 +77,8 @@ const App = () => {
   }, [blogs]);
   
 
-  const deleteBlog = (id, blogName) => {
-    if (window.confirm(`Delete '${blogName}'?`)) {
+  const deleteBlog = (id, blogTitle) => {
+    if (window.confirm(`Delete '${blogTitle}'?`)) {
       blogsService
         .deleteBlogInfo(id)
           .then(() => {
@@ -90,10 +90,10 @@ const App = () => {
     }
   };
 
-  const replaceInfoBlog = (name, newNumber) => {
-    const existingBlog = blogs.find(blog => blog.name === name);
+  const replaceInfoBlog = (title, newNumber) => {
+    const existingBlog = blogs.find(blog => blog.title === title);
 
-    if (window.confirm(`'${name}' is already added to the phonebook, replace the old number with the new one?`)) {
+    if (window.confirm(`'${title}' is already added to the phonebook, replace the old number with the new one?`)) {
       if (existingBlog) {
         const updatedBlog = { ...existingBlog, number: newNumber };
   
@@ -101,7 +101,7 @@ const App = () => {
           .update(existingBlog.id, updatedBlog)
           .then(returnedBlog => {
             setBlog(blogs.map(blog => (blog.id === returnedBlog.id ? returnedBlog : blog)));
-            setNewName('');
+            setNewTitle('');
             setNewNumber('');
           })
           .catch(error => {
@@ -116,7 +116,7 @@ const App = () => {
   const addBlog = event => {
     event.preventDefault();
     const newBlog = {
-      name: newName,
+      title: newTitle,
       number: newNumber
     };
 
@@ -125,12 +125,12 @@ const App = () => {
       .then(response => {
         setBlog(blogs.concat(response));
         setAddedMessage(
-          `Added ${newBlog.name}`
+          `Added ${newBlog.title}`
         )
         setTimeout(() => {
           setAddedMessage()
         }, 5000)
-        setNewName(''); 
+        setNewTitle(''); 
         setNewNumber('');
       })
       .catch(error => {
@@ -149,15 +149,15 @@ const App = () => {
       <h2>Bloglist</h2>
       <Notification message={AddedMessage} />
 
-      <Filter searchName={searchName} setSearchName={setSearchName} className="positive-message"  />
+      <Filter searchTitle={searchTitle} setSearchTitle={setSearchTitle} classTitle="positive-message"  />
 
 
       <h3>Add a new</h3>
 
       <BlogInfo
         addBlog={addBlog}
-        newName={newName}
-        setNewName={setNewName}
+        newTitle={newTitle}
+        setNewTitle={setNewTitle}
         newNumber={newNumber}
         setNewNumber={setNewNumber}
         replaceInfoBlog={replaceInfoBlog}
@@ -166,7 +166,7 @@ const App = () => {
 
       <h3>Numbers</h3>
 
-      <Notification message={AddedNegMessage} className="negative-message"/>
+      <Notification message={AddedNegMessage} classTitle="negative-message"/>
       {/* <Blogs deleteBlog={deleteBlog}/> */}
 
     </div>
