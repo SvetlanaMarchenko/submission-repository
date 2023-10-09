@@ -4,8 +4,8 @@ import axios from 'axios'
 
 import App from './App'
 
-axios.get('http://localhost:3001/api/bloglists').then(response => {
-// axios.get('/api/bloglists').then(response => {
-  const bloglists = response.data
-  ReactDOM.createRoot(document.getElementById('root')).render(<App bloglists={bloglists} />)
+axios.get('http://localhost:3003/api/blogs').then(response => {
+// axios.get('/api/blogs').then(response => {
+  const blogs = response.data
+  ReactDOM.createRoot(document.getElementById('root')).render(<App blogs={blogs} />)
 })

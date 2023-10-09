@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Notification from './Notification'
-import bloglistService from './bloglists';
+import blogsService from './blogs';
 import './index.css'
 
 const Filter = ({ searchName, setSearchName }) => {
@@ -11,15 +11,15 @@ const Filter = ({ searchName, setSearchName }) => {
   );
 };
 
-const BloglistInfo = ({ addBloglist, newName, setNewName, newNumber, setNewNumber, replaceInfoBloglist, bloglists }) => {
+const BlogInfo = ({ addBlog: addBlog, newName, setNewName, newNumber, setNewNumber, replaceInfoBlog: replaceInfoBlog, blogs }) => {
   const handleNumberChange = (event) => {
     const newNumberValue = event.target.value;
 
       setNewNumber(newNumberValue);
   };
 
-  return (
-    <form onSubmit={addBloglist}>
+  return ( 
+    <form onSubmit={addBlog}>
       <div>
         name: <input value={newName} onChange={(event) => setNewName(event.target.value)} />
       </div>
@@ -36,25 +36,25 @@ const BloglistInfo = ({ addBloglist, newName, setNewName, newNumber, setNewNumbe
 
 
 
-const Bloglists = ({ bloglists, deleteBloglist }) => {
-  if (bloglists.length === 0) {
-    return <div>Loading...</div>
-  }
+// const Blogs = ({ blogs, deleteBlog }) => {
+//   if (blogs.length === 0) {
+//     return <div>Loading...</div>
+//   }
 
-  return (
-    <ul>
-      {bloglists.map(bloglist => (
-        <li key={bloglist.name}>
-          {bloglist.name} {bloglist.number}
-          <button onClick={() => deleteBloglist(bloglist.id, bloglist.name)}>Delete</button>
-        </li>
-      ))}
-    </ul>
-  );
-};
+//   return (
+//     <ul>
+//       {blogs.map(blog => (
+//         <li key={blog.name}>
+//           {blog.name} {blog.number}
+//           <button onClick={() => deleteBlog(blog.id, blog.name)}>Delete</button>
+//         </li>
+//       ))}
+//     </ul>
+//   );
+// };
 
 const App = () => {
-  const [bloglists, setBloglist] = useState([]);
+  const [blogs, setBlog] = useState([]);
   const [searchName, setSearchName] = useState('');
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
@@ -62,10 +62,10 @@ const App = () => {
   const [AddedNegMessage, setAddedNegMessage] = useState(null)
 
   useEffect(() => {
-    bloglistService
+    blogsService
       .getAll()
       .then(response => {
-        setBloglist(response);
+        setBlog(response);
       })
       .catch(error => {
         console.log('Error fetching data:', error);
@@ -73,34 +73,34 @@ const App = () => {
   }, []);
   
   useEffect(() => {
-    console.log(bloglists); // This will log the updated bloglists array
-  }, [bloglists]);
+    console.log(blogs); // This will log the updated blogs array
+  }, [blogs]);
   
 
-  const deleteBloglist = (id, bloglistName) => {
-    if (window.confirm(`Delete '${bloglistName}'?`)) {
-      bloglistService
-        .deleteBloglistInfo(id)
+  const deleteBlog = (id, blogName) => {
+    if (window.confirm(`Delete '${blogName}'?`)) {
+      blogsService
+        .deleteBlogInfo(id)
           .then(() => {
-            setBloglist(bloglists.filter(bloglist => bloglist.id !== id));
+            setBlog(blogs.filter(blog => blog.id !== id));
           })
           .catch(error => {
-            console.log('Error deleting bloglist:', error);
+            console.log('Error deleting blog:', error);
           });
     }
   };
 
-  const replaceInfoBloglist = (name, newNumber) => {
-    const existingBloglist = bloglists.find(bloglist => bloglist.name === name);
+  const replaceInfoBlog = (name, newNumber) => {
+    const existingBlog = blogs.find(blog => blog.name === name);
 
     if (window.confirm(`'${name}' is already added to the phonebook, replace the old number with the new one?`)) {
-      if (existingBloglist) {
-        const updatedBloglist = { ...existingBloglist, number: newNumber };
+      if (existingBlog) {
+        const updatedBlog = { ...existingBlog, number: newNumber };
   
-        bloglistService
-          .update(existingBloglist.id, updatedBloglist)
-          .then(returnedBloglist => {
-            setBloglist(bloglists.map(bloglist => (bloglist.id === returnedBloglist.id ? returnedBloglist : bloglist)));
+        blogsService
+          .update(existingBlog.id, updatedBlog)
+          .then(returnedBlog => {
+            setBlog(blogs.map(blog => (blog.id === returnedBlog.id ? returnedBlog : blog)));
             setNewName('');
             setNewNumber('');
           })
@@ -113,19 +113,19 @@ const App = () => {
   
   
 
-  const addBloglist = event => {
+  const addBlog = event => {
     event.preventDefault();
-    const newBloglist = {
+    const newBlog = {
       name: newName,
       number: newNumber
     };
 
-    bloglistService
-      .create(newBloglist)
+    blogsService
+      .create(newBlog)
       .then(response => {
-        setBloglist(bloglists.concat(response));
+        setBlog(blogs.concat(response));
         setAddedMessage(
-          `Added ${newBloglist.name}`
+          `Added ${newBlog.name}`
         )
         setTimeout(() => {
           setAddedMessage()
@@ -144,11 +144,6 @@ const App = () => {
       });
   };
 
-  const bloglistsToShow = bloglists.filter(bloglist =>
-    bloglist.name.toLowerCase().includes(searchName.toLowerCase())
-  );
-
-
   return (
     <div>
       <h2>Bloglist</h2>
@@ -159,20 +154,20 @@ const App = () => {
 
       <h3>Add a new</h3>
 
-      <BloglistInfo
-        addBloglist={addBloglist}
+      <BlogInfo
+        addBlog={addBlog}
         newName={newName}
         setNewName={setNewName}
         newNumber={newNumber}
         setNewNumber={setNewNumber}
-        replaceInfoBloglist={replaceInfoBloglist}
-        bloglists={bloglists}
+        replaceInfoBlog={replaceInfoBlog}
+        blogs={blogs}
       />
 
       <h3>Numbers</h3>
 
       <Notification message={AddedNegMessage} className="negative-message"/>
-      <Bloglists bloglists={bloglistsToShow} deleteBloglist={deleteBloglist}/>
+      {/* <Blogs deleteBlog={deleteBlog}/> */}
 
     </div>
   );
