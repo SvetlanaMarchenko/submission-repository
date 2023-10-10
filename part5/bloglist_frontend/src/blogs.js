@@ -36,3 +36,4 @@ export default {
   update,
   deleteBlogInfo: deleteBloglistInfo
 }
+

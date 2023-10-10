@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Notification from './Notification'
 import blogsService from './blogs';
 import './index.css'
+import Blog from './components/Blog'
 
 const Filter = ({searchTitle, setSearchTitle }) => {
   return (
@@ -11,11 +12,11 @@ const Filter = ({searchTitle, setSearchTitle }) => {
   );
 };
 
-const BlogInfo = ({ addBlog: addBlog, newTitle, setNewTitle, newNumber, setNewNumber, replaceInfoBlog: replaceInfoBlog, blogs }) => {
-  const handleNumberChange = (event) => {
-    const newNumberValue = event.target.value;
+const BlogInfo = ({ addBlog: addBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, replaceInfoBlog: replaceInfoBlog, blogs }) => {
+  const handleAuthorChange = (event) => {
+    const newAuthorValue = event.target.value;
 
-      setNewNumber(newNumberValue);
+      setNewAuthor(newAuthorValue);
   };
 
   return ( 
@@ -24,7 +25,7 @@ const BlogInfo = ({ addBlog: addBlog, newTitle, setNewTitle, newNumber, setNewNu
         title: <input value={newTitle} onChange={(event) => setNewTitle(event.target.value)} />
       </div>
       <div>
-        number: <input value={newNumber} onChange={(event) => setNewNumber(event.target.value)} />
+        author: <input value={newAuthor} onChange={(event) => setNewAuthor(event.target.value)} />
       </div>
       <div>
         <button type="submit">add</button>
@@ -45,7 +46,7 @@ const BlogInfo = ({ addBlog: addBlog, newTitle, setNewTitle, newNumber, setNewNu
 //     <ul>
 //       {blogs.map(blog => (
 //         <li key={blog.name}>
-//           {blog.name} {blog.number}
+//           {blog.name} {blog.author}
 //           <button onClick={() => deleteBlog(blog.id, blog.name)}>Delete</button>
 //         </li>
 //       ))}
@@ -54,12 +55,13 @@ const BlogInfo = ({ addBlog: addBlog, newTitle, setNewTitle, newNumber, setNewNu
 // };
 
 const App = () => {
-  const [blogs, setBlog] = useState([]);
-  const [searchTitle, setSearchTitle] = useState('');
-  const [newTitle, setNewTitle] = useState('');
-  const [newNumber, setNewNumber] = useState('');
+  const [blogs, setBlog] = useState([])
+  const [searchTitle, setSearchTitle] = useState('')
+  const [newTitle, setNewTitle] = useState('')
+  const [newAuthor, setNewAuthor] = useState('')
   const [AddedMessage, setAddedMessage] = useState(null)
   const [AddedNegMessage, setAddedNegMessage] = useState(null)
+  const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
     blogsService
@@ -90,22 +92,22 @@ const App = () => {
     }
   };
 
-  const replaceInfoBlog = (title, newNumber) => {
+  const replaceInfoBlog = (title, newAuthor) => {
     const existingBlog = blogs.find(blog => blog.title === title);
 
-    if (window.confirm(`'${title}' is already added to the phonebook, replace the old number with the new one?`)) {
+    if (window.confirm(`'${title}' is already added to the phonebook, replace the old Author with the new one?`)) {
       if (existingBlog) {
-        const updatedBlog = { ...existingBlog, number: newNumber };
+        const updatedBlog = { ...existingBlog, author: newAuthor };
   
         blogsService
           .update(existingBlog.id, updatedBlog)
           .then(returnedBlog => {
             setBlog(blogs.map(blog => (blog.id === returnedBlog.id ? returnedBlog : blog)));
             setNewTitle('');
-            setNewNumber('');
+            setNewAuthor('');
           })
           .catch(error => {
-            console.log('Error replacing number:', error);
+            console.log('Error replacing author:', error);
           });
       }
     }
@@ -117,7 +119,7 @@ const App = () => {
     event.preventDefault();
     const newBlog = {
       title: newTitle,
-      number: newNumber
+      author: newAuthor
     };
 
     blogsService
@@ -131,7 +133,7 @@ const App = () => {
           setAddedMessage()
         }, 5000)
         setNewTitle(''); 
-        setNewNumber('');
+        setNewAuthor('');
       })
       .catch(error => {
         console.log(error.response.data.error);
@@ -143,6 +145,10 @@ const App = () => {
         }, 5000)
       });
   };
+
+  const blogsToShow = showAll
+    ? blogs
+    : blogs.filter(blog => blog.important)
 
   return (
     <div>
@@ -158,16 +164,24 @@ const App = () => {
         addBlog={addBlog}
         newTitle={newTitle}
         setNewTitle={setNewTitle}
-        newNumber={newNumber}
-        setNewNumber={setNewNumber}
+        newAuthor={newAuthor}
+        setNewAuthor={setNewAuthor}
         replaceInfoBlog={replaceInfoBlog}
         blogs={blogs}
       />
 
-      <h3>Numbers</h3>
+      <h3>Blogs</h3>
 
       <Notification message={AddedNegMessage} classTitle="negative-message"/>
       {/* <Blogs deleteBlog={deleteBlog}/> */}
+      <div>
+        {blogsToShow.map(blog => 
+          <Blog
+          title={blog.title}
+          blog={blog}
+          />
+        )}
+      </div>
 
     </div>
   );
