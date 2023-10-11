@@ -1,0 +1,19 @@
+GET http://localhost:3003/api/blogs
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjUxZTkyNGJiNmVjZjZhYmYwODZjMGNjIiwiaWF0IjoxNjk2NTkzMzg3fQ.T6NgDvREyPwL8z4CqhA24kZTOTxOoVr0GzT_CC9Op8I
+
+# {
+#   "title": "Заголовок блога22",
+#   "author": "Автор блога22",
+#   "url": "https://example222.com",
+#   "likes": 1011
+# }
+{
+  "title": "Это новый блог, оуе",
+  "author": "added a new blog",
+  "url": "https://added_a_new_blog.com",
+  "userId": "651e924bb6ecf6abf086c0cc"
+}

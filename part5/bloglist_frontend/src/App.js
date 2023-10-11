@@ -13,7 +13,7 @@ const Filter = ({ searchTitle, setSearchTitle }) => {
   );
 };
 
-const BlogInfo = ({ addBlog: addBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, replaceInfoBlog: replaceInfoBlog, blogs }) => {
+const BlogInfo = ({addBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, replaceInfoBlog, blogs }) => {
   const handleAuthorChange = (event) => {
     const newAuthorValue = event.target.value;
     setNewAuthor(newAuthorValue);
@@ -58,9 +58,9 @@ const App = () => {
       });
   }, []);
   
-  useEffect(() => {
-    console.log(blogs); // This will log the updated blogs array
-  }, [blogs]);
+  // useEffect(() => {
+  //   console.log(blogs); // This will log the updated blogs array
+  // }, [blogs]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -199,42 +199,48 @@ const App = () => {
     ? blogs
     : blogs.filter(blog => blog.important)
 
-  return (
-
-    <div>
   
+
+  return (
+    <div>
       <Notification message={AddedMessage} />
 
-      {user === null ?
-        loginForm() :
-        blogForm()
-      }
-      <Filter searchTitle={searchTitle} setSearchTitle={setSearchTitle} classTitle="positive-message" />
-      <h3>Add a new</h3>
-      <BlogInfo
-        addBlog={addBlog}
-        newTitle={newTitle}
-        setNewTitle={setNewTitle}
-        newAuthor={newAuthor}
-        setNewAuthor={setNewAuthor}
-        replaceInfoBlog={replaceInfoBlog}
-        blogs={blogs}
-      />
-      <h3>Blogs</h3>
-      <Notification message={AddedNegMessage} classTitle="negative-message" />
-      {/* <Blogs deleteBlog={deleteBlog}/> */}
-      <div>
-        {blogsToShow.map(blog => 
-          <Blog
-            key={blog.id}
-            blog={blog}
+      {user === null ? (
+        <>
+        <h1>log in to application</h1>
+        {loginForm()} 
+        </>
+      ) : (
+        <div>
+          <h3>Add a new</h3>
+          <BlogInfo
+            addBlog={addBlog}
+            newTitle={newTitle}
+            setNewTitle={setNewTitle}
+            newAuthor={newAuthor}
+            setNewAuthor={setNewAuthor}
+            replaceInfoBlog={replaceInfoBlog}
+            blogs={blogs}
           />
-        )}
-      </div>
+          <h3>Blogs</h3>
+          <Notification message={AddedNegMessage} classTitle="negative-message" />
+          {/* <Blogs deleteBlog={deleteBlog}/> */}
+          <div>
+            {blogsToShow.map(blog => 
+              <Blog
+                key={blog.id}
+                blog={blog}
+              />
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
-    
 }
+  
+
 
 
 export default App
+
