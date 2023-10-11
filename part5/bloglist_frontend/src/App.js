@@ -145,7 +145,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('Wrong password or login')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -187,8 +187,9 @@ const App = () => {
       .then(response => {
         setBlog(blogs.concat(response));
         setAddedMessage(
-          `Added ${newBlog.title}`
+          `A new blog ${newBlog.title}${newBlog.author} added`
         )
+
         setTimeout(() => {
           setAddedMessage()
         }, 5000)
@@ -214,6 +215,7 @@ const App = () => {
 
   return (
     <div>
+      {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
       <Notification message={AddedMessage} />
 
       {user === null ? (
@@ -226,6 +228,18 @@ const App = () => {
           <h3>Blogs</h3>
           <p>{user.name} logged in
           <button onClick={() => setUser(null)}>Logout</button></p>
+          <h3>Add a new</h3>
+          <BlogInfo
+            addBlog={addBlog}
+            newTitle={newTitle}
+            setNewTitle={setNewTitle}
+            newAuthor={newAuthor}
+            setNewAuthor={setNewAuthor}
+            replaceInfoBlog={replaceInfoBlog}
+            blogs={blogs}
+          />
+          <Notification message={AddedNegMessage} classTitle="negative-message" />
+          {/* <Blogs deleteBlog={deleteBlog}/> */}
           <div>
             {blogsToShow.map(blog => 
               <Blog
@@ -247,16 +261,5 @@ export default App
 
 
 
-          {/* <h3>Add a new</h3>
-          <BlogInfo
-            addBlog={addBlog}
-            newTitle={newTitle}
-            setNewTitle={setNewTitle}
-            newAuthor={newAuthor}
-            setNewAuthor={setNewAuthor}
-            replaceInfoBlog={replaceInfoBlog}
-            blogs={blogs}
-          />
-          <Notification message={AddedNegMessage} classTitle="negative-message" />
-          {/* <Blogs deleteBlog={deleteBlog}/> */}
+
 
