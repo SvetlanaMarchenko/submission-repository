@@ -70,7 +70,18 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  // useEffect(() => {
+  //   const userToken = localStorage.getItem('userToken');
+    
+  //   if (!userToken) {
+  //     window.location.href = '/login';
+  //   } else {
+  //     blogService.setToken(userToken);
+  //   }
+  // }, []);
   
+
 
   const deleteBlog = (id, blogTitle) => {
     if (window.confirm(`Delete '${blogTitle}'?`)) {
@@ -212,19 +223,9 @@ const App = () => {
         </>
       ) : (
         <div>
-          <h3>Add a new</h3>
-          <BlogInfo
-            addBlog={addBlog}
-            newTitle={newTitle}
-            setNewTitle={setNewTitle}
-            newAuthor={newAuthor}
-            setNewAuthor={setNewAuthor}
-            replaceInfoBlog={replaceInfoBlog}
-            blogs={blogs}
-          />
           <h3>Blogs</h3>
-          <Notification message={AddedNegMessage} classTitle="negative-message" />
-          {/* <Blogs deleteBlog={deleteBlog}/> */}
+          <p>{user.name} logged in
+          <button onClick={() => setUser(null)}>Logout</button></p>
           <div>
             {blogsToShow.map(blog => 
               <Blog
@@ -243,4 +244,19 @@ const App = () => {
 
 
 export default App
+
+
+
+          {/* <h3>Add a new</h3>
+          <BlogInfo
+            addBlog={addBlog}
+            newTitle={newTitle}
+            setNewTitle={setNewTitle}
+            newAuthor={newAuthor}
+            setNewAuthor={setNewAuthor}
+            replaceInfoBlog={replaceInfoBlog}
+            blogs={blogs}
+          />
+          <Notification message={AddedNegMessage} classTitle="negative-message" />
+          {/* <Blogs deleteBlog={deleteBlog}/> */}
 
