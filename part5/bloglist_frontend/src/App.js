@@ -179,9 +179,9 @@ const App = () => {
     event.preventDefault();
     const newBlog = {
       title: newTitle,
-      author: newAuthor
+      author: newAuthor, 
     };
-
+  
     blogService
       .create(newBlog)
       .then(response => {
@@ -234,7 +234,7 @@ const App = () => {
             newTitle={newTitle}
             setNewTitle={setNewTitle}
             newAuthor={newAuthor}
-            setNewAuthor={setNewAuthor}
+            setNewAuthor={setNewAuthor} 
             replaceInfoBlog={replaceInfoBlog}
             blogs={blogs}
           />
