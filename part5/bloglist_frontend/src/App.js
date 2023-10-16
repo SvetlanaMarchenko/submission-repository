@@ -182,7 +182,10 @@ const App = () => {
           <h3>Blogs</h3>
           <p>{user.name} logged in
           <button onClick={handleLogoutClick}>Logout</button></p>
+<<<<<<< HEAD
           {blogForm()}
+=======
+>>>>>>> origin/main
           <h3>Add a new</h3>
           <BlogInfo
             addBlog={addBlog}
