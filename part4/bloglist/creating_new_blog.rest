@@ -3,7 +3,7 @@ GET http://localhost:3003/api/blogs
 ###
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjUxZTkyNGJiNmVjZjZhYmYwODZjMGNjIiwiaWF0IjoxNjk3MDI0NDkwfQ.fFoSypr2SpQeDA52ST-gXGViongMo9O-LvVBDF3oTOs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjUxZTkyNGJiNmVjZjZhYmYwODZjMGNjIiwiaWF0IjoxNjk3NDU1MTI1fQ.BOTyCY7Y-Sgy0y4_xfZbhWj6v-vXPsk9GbzJdnVW97g
 
 # {
 #   "title": "Заголовок блога22",

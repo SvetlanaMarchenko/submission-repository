@@ -1,44 +1,29 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import blogService from './blogs';
 import './index.css'
 import Blog from './components/Blog'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+import BlogForm from './components/BlogForm'
+import Footer from './components/Footer'
 
-const Filter = ({ searchTitle, setSearchTitle }) => {
-  return (
-    <div>
-      filter shown with <input value={searchTitle} onChange={(event) => setSearchTitle(event.target.value)} />
-    </div>
-  );
-};
 
-const BlogInfo = ({addBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, replaceInfoBlog, blogs }) => {
+
+
+const BlogInfo = ({addBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl, replaceInfoBlog, blogs }) => {
   const handleAuthorChange = (event) => {
     const newAuthorValue = event.target.value;
     setNewAuthor(newAuthorValue);
   };
-
-  return (
-    <form onSubmit={addBlog}>
-      <div>
-        title: <input value={newTitle} onChange={(event) => setNewTitle(event.target.value)} />
-      </div>
-      <div>
-        author: <input value={newAuthor} onChange={(event) => setNewAuthor(event.target.value)} />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  );
 };
 
 const App = () => {
-  const [blogs, setBlog] = useState([])
+  const [blogs, setBlogs] = useState([])
   const [searchTitle, setSearchTitle] = useState('')
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
+  const [newUrl, setNewUrl] = useState('')
   const [AddedMessage, setAddedMessage] = useState(null)
   const [AddedNegMessage, setAddedNegMessage] = useState(null)
   const [showAll, setShowAll] = useState(true)
@@ -47,20 +32,18 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
+
   useEffect(() => {
     blogService
       .getAll()
       .then(response => {
-        setBlog(response);
+        setBlogs(response);
       })
       .catch(error => {
         console.log('Error fetching data:', error);
       });
   }, []);
-  
-  // useEffect(() => {
-  //   console.log(blogs); // This will log the updated blogs array
-  // }, [blogs]);
+
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -71,31 +54,22 @@ const App = () => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   const userToken = localStorage.getItem('userToken');
-    
-  //   if (!userToken) {
-  //     window.location.href = '/login';
-  //   } else {
-  //     blogService.setToken(userToken);
-  //   }
-  // }, []);
+  const blogFormRef = useRef()
+
   
-
-
-  const deleteBlog = (id, blogTitle) => {
-    if (window.confirm(`Delete '${blogTitle}'?`)) {
-      blogService
-        .deleteBlogInfo(id)
-          .then(() => {
-            setBlog(blogs.filter(blog => blog.id !== id));
-          })
-          .catch(error => {
-            console.log('Error deleting blog:', error);
-          });
-    }
-  }
-
+  // const deleteBlog = (id, blogTitle) => {
+  //   if (window.confirm(`Delete '${blogTitle}'?`)) {
+  //     blogService
+  //       .deleteBlogInfo(id)
+  //         .then(() => {
+  //           setBlogs(blogs.filter(blog => blog.id !== id));
+  //         })
+  //         .catch(error => {
+  //           console.log('Error deleting blog:', error);
+  //         });
+  //   }
+  // }
+  
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
@@ -121,14 +95,17 @@ const App = () => {
   )
 
   const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <input
-        value={newTitle}
-        // onChange={handleTitleChange}
-      />
-      <button type="submit">save</button>
-    </form>  
-  )
+    <Togglable buttonLabel="new blog" ref={blogFormRef} >
+      <BlogForm createBlog={addBlog} />
+    </Togglable>
+    )
+  
+    const blogsToShow = showAll
+      ? blogs
+      : blogs.filter(blog => blog.important)
+
+      
+      
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -152,7 +129,7 @@ const App = () => {
     }
   }
 
-  const replaceInfoBlog = (title, newAuthor) => {
+  const replaceInfoBlog = (title, newAuthor, url) => {
     const existingBlog = blogs.find(blog => blog.title === title);
 
     if (window.confirm(`'${title}' is already added to the phonebook, replace the old Author with the new one?`)) {
@@ -162,9 +139,10 @@ const App = () => {
         blogService
           .update(existingBlog.id, updatedBlog)
           .then(returnedBlog => {
-            setBlog(blogs.map(blog => (blog.id === returnedBlog.id ? returnedBlog : blog)));
+            setBlogs(blogs.map(blog => (blog.id === returnedBlog.id ? returnedBlog : blog)));
             setNewTitle('');
             setNewAuthor('');
+            setNewUrl('');
           })
           .catch(error => {
             console.log('Error replacing author:', error);
@@ -173,43 +151,16 @@ const App = () => {
     }
   };
   
+
   
 
-  const addBlog = event => {
-    event.preventDefault();
-    const newBlog = {
-      title: newTitle,
-      author: newAuthor, 
-    };
-  
+  const addBlog = (blogObject) => {
     blogService
-      .create(newBlog)
-      .then(response => {
-        setBlog(blogs.concat(response));
-        setAddedMessage(
-          `A new blog ${newBlog.title}${newBlog.author} added`
-        )
-
-        setTimeout(() => {
-          setAddedMessage()
-        }, 5000)
-        setNewTitle(''); 
-        setNewAuthor('');
+      .create(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
       })
-      .catch(error => {
-        console.log(error.response.data.error);
-        setAddedNegMessage(
-          error.response.data.error
-        )
-        setTimeout(() => {
-          setAddedNegMessage()
-        }, 5000)
-      });
-  };
-
-  const blogsToShow = showAll
-    ? blogs
-    : blogs.filter(blog => blog.important)
+  }
 
   const handleLogoutClick = event => {
     setUser(null);
@@ -231,6 +182,7 @@ const App = () => {
           <h3>Blogs</h3>
           <p>{user.name} logged in
           <button onClick={handleLogoutClick}>Logout</button></p>
+          {blogForm()}
           <h3>Add a new</h3>
           <BlogInfo
             addBlog={addBlog}
@@ -238,6 +190,8 @@ const App = () => {
             setNewTitle={setNewTitle}
             newAuthor={newAuthor}
             setNewAuthor={setNewAuthor} 
+            newUrl={newUrl}
+            setNewUrl={setNewUrl}
             replaceInfoBlog={replaceInfoBlog}
             blogs={blogs}
           />
@@ -253,6 +207,7 @@ const App = () => {
           </div>
         </div>
       )}
+      <Footer />
     </div>
   );
 }
