@@ -211,7 +211,10 @@ const App = () => {
     ? blogs
     : blogs.filter(blog => blog.important)
 
-  
+  const handleLogoutClick = event => {
+    setUser(null);
+    window.localStorage.removeItem('loggedBlogappUser');
+  }
 
   return (
     <div>
@@ -227,7 +230,7 @@ const App = () => {
         <div>
           <h3>Blogs</h3>
           <p>{user.name} logged in
-          <button onClick={() => setUser(null)}>Logout</button></p>
+          <button onClick={handleLogoutClick}>Logout</button></p>
           <h3>Add a new</h3>
           <BlogInfo
             addBlog={addBlog}
