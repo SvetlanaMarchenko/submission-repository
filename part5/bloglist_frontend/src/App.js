@@ -11,7 +11,7 @@ import Footer from './components/Footer'
 
 
 
-const BlogInfo = ({addBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl, replaceInfoBlog, blogs }) => {
+const BlogInfo = ({addBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl,newLikes, setNewLikes, replaceInfoBlog, blogs }) => {
   const handleAuthorChange = (event) => {
     const newAuthorValue = event.target.value;
     setNewAuthor(newAuthorValue);
@@ -24,6 +24,7 @@ const App = () => {
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
+  const [newLikes, setNewLikes] = useState('')
   const [AddedMessage, setAddedMessage] = useState(null)
   const [AddedNegMessage, setAddedNegMessage] = useState(null)
   const [showAll, setShowAll] = useState(true)
@@ -129,7 +130,7 @@ const App = () => {
     }
   }
 
-  const replaceInfoBlog = (title, newAuthor, url) => {
+  const replaceInfoBlog = (title, newAuthor, url, likes) => {
     const existingBlog = blogs.find(blog => blog.title === title);
 
     if (window.confirm(`'${title}' is already added to the phonebook, replace the old Author with the new one?`)) {
@@ -143,6 +144,8 @@ const App = () => {
             setNewTitle('');
             setNewAuthor('');
             setNewUrl('');
+            setNewLikes('');
+            
           })
           .catch(error => {
             console.log('Error replacing author:', error);
@@ -192,18 +195,33 @@ const App = () => {
             setNewAuthor={setNewAuthor} 
             newUrl={newUrl}
             setNewUrl={setNewUrl}
+            newLikes={newLikes}
+            setNewLikes={setNewLikes}
+            
             replaceInfoBlog={replaceInfoBlog}
             blogs={blogs}
           />
           <Notification message={AddedNegMessage} classTitle="negative-message" />
           {/* <Blogs deleteBlog={deleteBlog}/> */}
           <div>
-            {blogsToShow.map(blog => 
-              <Blog
-                key={blog.id}
-                blog={blog}
-              />
-            )}
+          {blogsToShow.map(blog => (
+            <div key={blog.id}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Blog key={blog.id} blog={{ title: blog.title }}>
+                  <Togglable buttonLabel="show" ref={blogFormRef}>
+                    {blog.author}<br />
+                    {blog.likes} <button onClick={() => {}}>Like</button> <br />
+                    {blog.url}
+                  </Togglable>
+                </Blog>
+              </div>
+            </div>
+          ))}
+
+
+
+
+
           </div>
         </div>
       )}

@@ -4,6 +4,7 @@ const BlogForm = ({ createBlog }) => {
   const [newTitle, setNewTitle] = useState(''); 
   const [newAuthor, setNewAuthor] = useState('');
   const [newUrl, setNewUrl] = useState('');
+  const [newLikes, setNewLikes] = useState('');
 
   const addBlog = (event) => {
     event.preventDefault();
@@ -11,11 +12,13 @@ const BlogForm = ({ createBlog }) => {
       title: newTitle,
       author: newAuthor,
       url: newUrl,
+      likes: newLikes,
     });
 
     setNewTitle(''); 
     setNewAuthor('');
     setNewUrl('');
+    setNewLikes('');
   }
 
   return (
@@ -30,6 +33,9 @@ const BlogForm = ({ createBlog }) => {
         </div>
         <div>
           url: <input value={newUrl} onChange={(event) => setNewUrl(event.target.value)} />
+        </div>
+        <div>
+          likes: <input value={newLikes} onChange={(event) => setNewLikes(event.target.value)} />
         </div>
         <div>
           <button type="submit">add</button>

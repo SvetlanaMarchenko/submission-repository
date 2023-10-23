@@ -1,5 +1,4 @@
-
-const Blog = ({ blog }) => {
+const Blog = ({ blog, children }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -11,9 +10,29 @@ const Blog = ({ blog }) => {
   return (
     <div style={blogStyle}>
       <div>
-        {blog.title} {blog.author} {blog.url} 
+        {blog.title}
       </div>
-  </div>
-)}
+      {blog.author && (
+        <div>
+          {blog.author}
+        </div>
+      )}
+      {blog.url && (
+        <div>
+          {blog.url}
+        </div>
+      )}
+      {blog.likes && (
+        <div>
+          {blog.likes}
+        </div>
+      )}
+
+      <div>
+        {children}
+      </div>
+    </div>
+  )
+}
 
 export default Blog
