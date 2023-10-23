@@ -7,10 +7,14 @@ Content-Type: application/json
 {
   "title": "Заголовок блога22",
   "author": "Автор блога22",
-  "userId": "651e924bb6ecf6abf086c0cc"
+  "userId": "651e924bb6ecf6abf086c0cc",
+  "likes": "1011"
+
+
 }
 # {
 #   "title": "added a without likes blog",
 #   "author": "added a new blog",
-#   "url": "https://added_a_new_blog.com"
+#   "url": "https://added_a_new_blog.com",
+#   "likes": "1011"
 # }

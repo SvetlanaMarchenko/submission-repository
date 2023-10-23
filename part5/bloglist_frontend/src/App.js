@@ -130,31 +130,38 @@ const App = () => {
     }
   }
 
-  const replaceInfoBlog = (title, newAuthor, url, likes) => {
-    const existingBlog = blogs.find(blog => blog.title === title);
-
-    if (window.confirm(`'${title}' is already added to the phonebook, replace the old Author with the new one?`)) {
-      if (existingBlog) {
-        const updatedBlog = { ...existingBlog, author: newAuthor };
+  const handleLike = (blog) => {
+    const updatedBlog = { ...blog, likes: blog.likes + 1 }; // Увеличьте количество лайков
   
-        blogService
-          .update(existingBlog.id, updatedBlog)
-          .then(returnedBlog => {
-            setBlogs(blogs.map(blog => (blog.id === returnedBlog.id ? returnedBlog : blog)));
-            setNewTitle('');
-            setNewAuthor('');
-            setNewUrl('');
-            setNewLikes('');
-            
-          })
-          .catch(error => {
-            console.log('Error replacing author:', error);
-          });
-      }
-    }
+    blogService
+      .update(blog.id, updatedBlog) // Передайте идентификатор блога и обновленные данные
+      .then(returnedBlog => {
+        // Обновите состояние блогов на фронтенде, если нужно
+        setBlogs(blogs.map(b => (b.id === returnedBlog.id ? returnedBlog : b)));
+      })
+      .catch(error => {
+        // Обработка ошибок
+        console.error(error);
+      });
+  }
+  
+  const replaceInfoBlog = (blog) => {
+    const updatedBlog = { ...blog, likes: blog.likes + 1 };
+  
+    blogService
+      .update(blog.id, updatedBlog)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(b => (b.id === returnedBlog.id ? returnedBlog : b)));
+        setNewTitle('');
+        setNewAuthor('');
+        setNewUrl('');
+        setNewLikes('');
+      })
+      .catch(error => {
+        console.log('Error updating blog:', error);
+      });
   };
   
-
   
 
   const addBlog = (blogObject) => {
@@ -189,6 +196,7 @@ const App = () => {
           <h3>Add a new</h3>
           <BlogInfo
             addBlog={addBlog}
+            handleLike= {handleLike}
             newTitle={newTitle}
             setNewTitle={setNewTitle}
             newAuthor={newAuthor}
@@ -210,7 +218,7 @@ const App = () => {
                 <Blog key={blog.id} blog={{ title: blog.title }}>
                   <Togglable buttonLabel="show" ref={blogFormRef}>
                     {blog.author}<br />
-                    {blog.likes} <button onClick={() => {}}>Like</button> <br />
+                    {blog.likes} <button onClick={() => replaceInfoBlog(blog)}>Like</button><br />
                     {blog.url}
                   </Togglable>
                 </Blog>

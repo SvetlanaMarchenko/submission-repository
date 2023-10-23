@@ -1,6 +1,7 @@
 import axios from 'axios'
 const baseUrl = 'http://localhost:3003/api/blogs'
-// const baseUrl = '/api/blogs'
+// const baseUrl = '/api/blogs'пропорпорплорп
+
 
 let token = null
 
@@ -22,9 +23,13 @@ const create = newObject => {
   return request.then(response => response.data)
 }
 
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
-  return request.then(response => response.data)
+const update = (id, reNewObject) => { // Добавьте параметр id для указания конкретного блога
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  const request = axios.put(`${baseUrl}/${id}`, reNewObject, config); // Используйте `${baseUrl}/${id}` для указания URL-адреса с идентификатором блога
+  return request.then(response => response.data);
 }
 
 const deleteBloglistInfo = (id) => {

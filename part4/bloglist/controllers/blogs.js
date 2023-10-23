@@ -64,11 +64,12 @@ blogsRouter.delete('/:id', async (request, response) => {
 // Обновление блога
 blogsRouter.put('/:id', async (request, response) => {
   const { id } = request.params;
-  const updatedBlog = request.body;
+  const updatedBlog_likes = request.body.likes;
+  
 
   try {
     // Найдите блог по id и обновите его
-    const updatedBlogResult = await Blog.findByIdAndUpdate(id, updatedBlog, {
+    const updatedBlogResult = await Blog.findByIdAndUpdate(id, {likes: updatedBlog_likes}, {
       new: true, // Этот параметр возвращает обновленный блог в ответе
     });
 

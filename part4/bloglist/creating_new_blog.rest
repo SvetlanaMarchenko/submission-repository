@@ -15,5 +15,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imhlb
   "title": "Совершенно новый",
   "author": "added a new blog",
   "url": "https://added_a_new_blog.com",
-  "userId": "651e924bb6ecf6abf086c0cc"
+  "userId": "651e924bb6ecf6abf086c0cc",
+  "likes": "1011"
 }
