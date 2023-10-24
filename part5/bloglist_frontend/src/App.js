@@ -7,6 +7,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import Footer from './components/Footer'
+import PropTypes from 'prop-types'
 
 const BlogInfo = ({addBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl,newLikes, setNewLikes, replaceInfoBlog, blogs }) => {
   const handleAuthorChange = (event) => {
@@ -216,6 +217,7 @@ const App = () => {
                     {blog.url}
                   </Togglable>
                   <button onClick={() => deleteBlog(blog.id, blog)}>remove</button>
+                  <Togglable> buttonLabel forgotten... </Togglable>
                 </Blog>
               </div>
             </div>
