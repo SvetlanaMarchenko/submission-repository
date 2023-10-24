@@ -6,7 +6,6 @@ const Blog = ({ blog, children }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  
 
   return (
     <div style={blogStyle}>

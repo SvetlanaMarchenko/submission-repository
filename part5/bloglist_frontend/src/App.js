@@ -177,6 +177,8 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser');
   }
 
+  const sortedBlogs = blogs.slice().sort((a, b) => b.likes - a.likes);
+
   return (
     <div>
       {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
@@ -212,7 +214,7 @@ const App = () => {
           <Notification message={AddedNegMessage} classTitle="negative-message" />
           {/* <Blogs deleteBlog={deleteBlog}/> */}
           <div>
-          {blogsToShow.map(blog => (
+          {sortedBlogs.map(blog => (
             <div key={blog.id}>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Blog key={blog.id} blog={{ title: blog.title }}>
