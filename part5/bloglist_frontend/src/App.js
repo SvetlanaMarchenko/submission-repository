@@ -8,9 +8,6 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import Footer from './components/Footer'
 
-
-
-
 const BlogInfo = ({addBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl,newLikes, setNewLikes, replaceInfoBlog, blogs }) => {
   const handleAuthorChange = (event) => {
     const newAuthorValue = event.target.value;
@@ -58,18 +55,18 @@ const App = () => {
   const blogFormRef = useRef()
 
   
-  // const deleteBlog = (id, blogTitle) => {
-  //   if (window.confirm(`Delete '${blogTitle}'?`)) {
-  //     blogService
-  //       .deleteBlogInfo(id)
-  //         .then(() => {
-  //           setBlogs(blogs.filter(blog => blog.id !== id));
-  //         })
-  //         .catch(error => {
-  //           console.log('Error deleting blog:', error);
-  //         });
-  //   }
-  // }
+  const deleteBlog = (id, blog) => {
+    if (window.confirm(`Remove blog '${blog.id}'?`)) {
+      blogService
+        .deleteBlog(id)
+        .then(() => {
+          setBlogs(blogs.filter(blog => blog.id !== id));
+        })
+        .catch(error => {
+          console.log('Error deleting blog:', error);
+        });
+    }
+  }
   
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -101,11 +98,6 @@ const App = () => {
     </Togglable>
     )
   
-    const blogsToShow = showAll
-      ? blogs
-      : blogs.filter(blog => blog.important)
-
-      
       
 
   const handleLogin = async (event) => {
@@ -210,9 +202,9 @@ const App = () => {
             
             replaceInfoBlog={replaceInfoBlog}
             blogs={blogs}
+            deleteBlog={deleteBlog}
           />
           <Notification message={AddedNegMessage} classTitle="negative-message" />
-          {/* <Blogs deleteBlog={deleteBlog}/> */}
           <div>
           {sortedBlogs.map(blog => (
             <div key={blog.id}>
@@ -223,15 +215,11 @@ const App = () => {
                     {blog.likes} <button onClick={() => replaceInfoBlog(blog)}>Like</button><br />
                     {blog.url}
                   </Togglable>
+                  <button onClick={() => deleteBlog(blog.id, blog)}>remove</button>
                 </Blog>
               </div>
             </div>
           ))}
-
-
-
-
-
           </div>
         </div>
       )}
@@ -239,9 +227,6 @@ const App = () => {
     </div>
   );
 }
-  
-
-
 
 export default App
 

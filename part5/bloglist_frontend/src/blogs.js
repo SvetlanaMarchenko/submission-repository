@@ -32,8 +32,12 @@ const update = (id, reNewObject) => { // Добавьте параметр id д
   return request.then(response => response.data);
 }
 
-const deleteBloglistInfo = (id) => {
-  const request = axios.delete(`${baseUrl}/${id}`)
+const deleteBlog = (id) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  const request = axios.delete(`${baseUrl}/${id}`, config)
   return request.then(response => response.data)
 }
 
@@ -42,6 +46,6 @@ export default {
   getAll, 
   create, 
   update,
-  deleteBloglistInfo
+  deleteBlog
 }
 
