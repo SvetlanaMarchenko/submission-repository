@@ -64,11 +64,6 @@ const App = () => {
       })
   }
 
-  const handleLogoutClick = event => {
-    setUser(null);
-    window.localStorage.removeItem('loggedBlogappUser');
-  }
-
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -142,7 +137,6 @@ const App = () => {
           show {showAll ? 'important' : 'all' }
         </button>
       </div>
-      <button onClick={handleLogoutClick}>Logout</button>
       <ul>
         {notesToShow.map(note =>
           <Note
