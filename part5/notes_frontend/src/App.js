@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
-import Note from './components/Note'
-import Notification from './components/Notification'
-import Footer from './components/Footer'
-import Togglable from './components/Togglable'
-import LoginForm from './components/LoginForm'
-import NoteForm from './components/NoteForm'
-import noteService from './services/notes'
-import loginService from './services/login'
+import Note from './components/Note.jsx'
+import Notification from './components/Notification.jsx'
+import Footer from './components/Footer.jsx'
+import Togglable from './components/Togglable.js'
+import LoginForm from './components/LoginForm.js'
+import NoteForm from './components/NoteForm.jsx'
+import noteService from './services/notes.js'
+import loginService from './services/login.js'
 
 const App = () => {
   const [notes, setNotes] = useState([])
