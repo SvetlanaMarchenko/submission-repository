@@ -1,16 +1,37 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import Note from './Note.jsx'
+import userEvent from '@testing-library/user-event'
+import Togglable from './Togglable'
 
-test('renders content', () => {
-  const note = {
-    content: 'Component testing is done with react-testing-library',
-    important: true
-  }
+describe('<Togglable />', () => {
+  let container
 
-  render(<Note note={note} />)
+  beforeEach(() => {
+    container = render(
+      <Togglable buttonLabel="show...">
+        <div className="testDiv" >
+          togglable content
+        </div>
+      </Togglable>
+    ).container
+  })
 
-  const element = screen.getByText('Component testing is done with react-testing-library')
-  expect(element).toBeDefined()
+  test('renders its children', async () => {
+    await screen.findAllByText('togglable content')
+  })
+
+  test('at start the children are not displayed', () => {
+    const div = container.querySelector('.togglableContent')
+    expect(div).toHaveStyle('display: none')
+  })
+
+  test('after clicking the button, children are displayed', async () => {
+    const user = userEvent.setup()
+    const button = screen.getByText('show...')
+    await user.click(button)
+
+    const div = container.querySelector('.togglableContent')
+    expect(div).not.toHaveStyle('display: none')
+  })
 })

@@ -8,7 +8,7 @@ const Blog = ({ blog, children }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       <div>
         {blog.title}
       </div>
