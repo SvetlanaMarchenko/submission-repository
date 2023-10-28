@@ -1,24 +1,31 @@
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import Togglable from './Togglable';
 
-import React from 'react'
-import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
-import Blog from './Blog'
+describe('<Togglable />', () => {
+  let component;
 
-test('renders content', () => {
-  const blog = {
-    title: 'Component testing is done with react-testing-library',
-    author: "testing author",
-    url: "newUrl",
-    likes: "newLikes"
-  }
+  beforeEach(() => {
+    component = render(
+      <Togglable buttonLabel="View">
+        <div className="togglableContent">
+          <p>Blog URL: newUrl</p>
+          <p>Likes: newLikes</p>
+        </div>
+      </Togglable>
+    );
+  });
 
-  render(<Blog blog={blog} />)
+  test('details are initially hidden', () => {
+    const details = component.container.querySelector('.togglableContent');
+    expect(getComputedStyle(details).display).toBe('none');
+  });
 
-  const element = screen.getByText('Component testing is done with react-testing-library')
-  const element_2 = screen.getByText('testing author')
-  expect(element).toBeDefined()
-  expect(element_2).toBeDefined()
+  test('details become visible after clicking the button', () => {
+    const button = screen.getByText('View');
+    fireEvent.click(button);
 
-  
-
-})
+    const details = component.container.querySelector('.togglableContent');
+    expect(getComputedStyle(details).display).toBe('block');
+  });
+});
