@@ -7,6 +7,7 @@ import LoginForm from './components/LoginForm.js'
 import NoteForm from './components/NoteForm.jsx'
 import noteService from './services/notes.js'
 import loginService from './services/login.js'
+import './index.css'
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -62,11 +63,6 @@ const App = () => {
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
       })
-  }
-
-  const handleLogoutClick = event => {
-    setUser(null);
-    window.localStorage.removeItem('loggedBlogappUser');
   }
 
   const handleLogin = async (event) => {
@@ -142,7 +138,6 @@ const App = () => {
           show {showAll ? 'important' : 'all' }
         </button>
       </div>
-      <button onClick={handleLogoutClick}>Logout</button>
       <ul>
         {notesToShow.map(note =>
           <Note
