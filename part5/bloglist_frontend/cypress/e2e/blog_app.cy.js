@@ -18,22 +18,15 @@ describe('Blog app', function() {
       cy.get('#password').type('salainen')
       cy.get('#login-button').click() // Выбираем кнопку с id "login-button" и кликаем по ней
     })
+    it('fails with wrong credentials', function() {
+      cy.get('input:first').type('hellas')
+      cy.get('input:last').type('wrong')
+      cy.get('#login-button').click()
+    })
   })
-  
-  
-    // it('fails with wrong credentials', function() {
-    //   cy.get('input:first').type('hellas')
-    //   cy.get('input:last').type('wrong')
-    //   // cy.get('#login-button').click()
-    //   cy.contains('log in').click()
-    // })
-  })
- 
-  
-  
-  
+})
+
     // describe('when logged in', function() {
     //   beforeEach(function() {
     //     cy.login({ username: 'hellas', password: 'salainen' })
     //   })
-  

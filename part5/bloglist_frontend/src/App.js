@@ -8,6 +8,7 @@ import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import Footer from './components/Footer'
 import PropTypes from 'prop-types'
+import LoginForm from './components/LoginForm'
 
 const BlogInfo = (addBlog, newTitle, setNewTitle, newAuthor, setNewAuthor, newUrl, setNewUrl,newLikes, setNewLikes, replaceInfoBlog, blogs ) => {
   const handleAuthorChange = (event) => {
@@ -69,29 +70,13 @@ const App = () => {
   }
   const loginForm = () => (
     <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          id ='username'
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          id='password'
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button id="login-button" type="submit">
-          login
-      </button>
+      <LoginForm
+        username={username}
+        password={password}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+        handleSubmit={handleLogin}
+      />
     </form>
   )
 
