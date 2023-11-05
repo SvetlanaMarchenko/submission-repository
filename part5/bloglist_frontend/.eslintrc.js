@@ -15,7 +15,7 @@ module.exports = {
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
   settings: { react: { version: '18.2' } },
-  plugins: ['react-refresh', 'jest', 'cypress'],
+  plugins: ['react', 'jest', 'cypress'],
   rules: {
     "indent": [
         "error",

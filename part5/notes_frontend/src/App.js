@@ -116,6 +116,11 @@ const App = () => {
     </Togglable>
   )
 
+  const handleLogoutClick = event => {
+    setUser(null);
+    window.localStorage.removeItem('loggedBlogappUser')
+  }
+
   const notesToShow = showAll
     ? notes
     : notes.filter(note => note.important)
@@ -138,6 +143,7 @@ const App = () => {
           show {showAll ? 'important' : 'all' }
         </button>
       </div>
+      <button onClick={handleLogoutClick}>Logout</button>
       <ul>
         {notesToShow.map(note =>
           <Note
