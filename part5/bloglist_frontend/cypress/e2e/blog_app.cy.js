@@ -26,7 +26,17 @@ describe('Blog app', function() {
   })
 })
 
-    // describe('when logged in', function() {
-    //   beforeEach(function() {
-    //     cy.login({ username: 'hellas', password: 'salainen' })
-    //   })
+describe('when logged in', function() {
+  beforeEach(function() {
+    cy.login({ username: 'hellas', password: 'salainen' })
+  })
+
+  it('a new blog can be created', function() {
+    cy.contains('new blog').click()
+    cy.get('#title').type('a blog created by cypress')
+    cy.get('#author').type('ulululululullu')
+    cy.get('#url').type('hfskljdhflkjsdhfl')
+    cy.contains('add').click()
+    cy.contains('a blog created by cypress')
+  })
+})

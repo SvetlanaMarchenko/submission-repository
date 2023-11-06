@@ -68,23 +68,13 @@ const App = () => {
         })
     }
   }
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <LoginForm
-        username={username}
-        password={password}
-        handleUsernameChange={({ target }) => setUsername(target.value)}
-        handlePasswordChange={({ target }) => setPassword(target.value)}
-        handleSubmit={handleLogin}
-      />
-    </form>
-  )
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value)
+  }
 
-  const blogForm = () => (
-    <Togglable buttonLabel="new blog" ref={blogFormRef} >
-      <BlogForm createBlog={addBlog} />
-    </Togglable>
-  )
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value)
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -106,6 +96,12 @@ const App = () => {
       }, 5000)
     }
   }
+
+  const blogForm = () => (
+    <Togglable buttonLabel="new blog" ref={blogFormRef} >
+      <BlogForm createBlog={addBlog} />
+    </Togglable>
+  )
 
   const handleLike = (blog) => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 } // Увеличьте количество лайков
@@ -161,7 +157,13 @@ const App = () => {
       {user === null ? (
         <>
           <h1>log in to application</h1>
-          {loginForm()}
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={handleUsernameChange}
+            handlePasswordChange={handlePasswordChange}
+            handleSubmit={handleLogin}
+          />
         </>
       ) : (
         <div>

@@ -1,24 +1,24 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
 const BlogForm = ({ createBlog }) => {
-  const [newTitle, setNewTitle] = useState(''); 
-  const [newAuthor, setNewAuthor] = useState('');
-  const [newUrl, setNewUrl] = useState('');
-  const [newLikes, setNewLikes] = useState('');
+  const [newTitle, setNewTitle] = useState('')
+  const [newAuthor, setNewAuthor] = useState('')
+  const [newUrl, setNewUrl] = useState('')
+  const [newLikes, setNewLikes] = useState('')
 
   const addBlog = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     createBlog({
       title: newTitle,
       author: newAuthor,
       url: newUrl,
       likes: newLikes,
-    });
+    })
 
-    setNewTitle(''); 
-    setNewAuthor('');
-    setNewUrl('');
-    setNewLikes('');
+    setNewTitle('')
+    setNewAuthor('')
+    setNewUrl('')
+    setNewLikes('')
   }
 
   return (
@@ -26,13 +26,27 @@ const BlogForm = ({ createBlog }) => {
       <h2>Create a new blog</h2>
       <form onSubmit={addBlog}>
         <div>
-          title: <input value={newTitle} onChange={(event) => setNewTitle(event.target.value)} />
+          <label htmlFor="title">Title: </label>
+          <input
+            id="title"
+            value={newTitle}
+            onChange={(event) => setNewTitle(event.target.value)}
+          />
         </div>
         <div>
-          author: <input value={newAuthor} onChange={(event) => setNewAuthor(event.target.value)} />
+          <label htmlFor="author">author </label>
+          <input
+            id='author'
+            value={newAuthor}
+            onChange={(event) => setNewAuthor(event.target.value)}
+          />
         </div>
         <div>
-          url: <input value={newUrl} onChange={(event) => setNewUrl(event.target.value)} />
+          url: <input
+            id='url'
+            value={newUrl}
+            onChange={(event) => setNewUrl(event.target.value)}
+          />
         </div>
         <div>
           likes: <input value={newLikes} onChange={(event) => setNewLikes(event.target.value)} />
@@ -42,7 +56,7 @@ const BlogForm = ({ createBlog }) => {
         </div>
       </form>
     </div>
-  );
+  )
 }
 
-export default BlogForm;
+export default BlogForm
