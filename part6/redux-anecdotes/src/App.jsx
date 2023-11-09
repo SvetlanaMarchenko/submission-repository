@@ -1,15 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { createStore } from 'redux';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import reducer from './reducers/anecdoteReducer';
-
-const store = createStore(reducer);
+import rootReducer from './reducers/anecdoteReducer';
 
 const App = () => {
-  const anecdotes = useSelector(state => state);
+  const anecdotes = useSelector(state => state.anecdotes.anecdotes);
   const dispatch = useDispatch();
+  const [newAnecdote, setNewAnecdote] = useState('');
 
   const vote = (id) => {
     console.log('vote', id);
@@ -18,6 +15,22 @@ const App = () => {
       id: id
     });
   };
+
+  const addAnecdote = (event) => {
+    event.preventDefault();
+    console.log('addAnecdote', newAnecdote);
+    dispatch({
+      type: 'NEW_ANECDOTE',
+      data: {
+        content: newAnecdote,
+        id: getId(),
+        votes: 0
+      }
+    });
+    setNewAnecdote('');
+  };
+
+  const getId = () => (100000 * Math.random()).toFixed(0);
 
   return (
     <div>
@@ -35,21 +48,18 @@ const App = () => {
         </div>
       )}
       <h2>create new</h2>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <div><input type="text" /></div>
+      <form onSubmit={addAnecdote}>
+        <div>
+          <input
+            type="text"
+            value={newAnecdote}
+            onChange={(e) => setNewAnecdote(e.target.value)}
+          />
+        </div>
         <button type="submit">create</button>
       </form>
     </div>
   );
 };
-
-const root = createRoot(document.getElementById('root'));
-
-const renderApp = () => {
-  root.render(<App />);
-};
-
-renderApp();
-store.subscribe(renderApp);
 
 export default App;

@@ -1,3 +1,5 @@
+import { combineReducers } from 'redux';
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -7,19 +9,19 @@ const anecdotesAtStart = [
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
 
-const getId = () => (100000 * Math.random()).toFixed(0)
 
-const asObject = (anecdote) => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
-}
+const getId = () => (100000 * Math.random()).toFixed(0);
 
-const initialState = anecdotesAtStart.map(asObject)
+const asObject = (anecdote) => ({
+  content: anecdote,
+  id: getId(),
+  votes: 0
+});
 
-const reducer = (state = initialState, action) => {
+const initialState = anecdotesAtStart.map(asObject);
+
+
+const anecdoteReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'VOTE':
       return state.map(anecdote =>
@@ -28,10 +30,16 @@ const reducer = (state = initialState, action) => {
           : anecdote
       );
 
+    case 'NEW_ANECDOTE':
+      return [...state, action.data];
+
     default:
       return state;
   }
 };
 
-export default reducer;
+const rootReducer = combineReducers({
+  anecdotes: anecdoteReducer,
+});
 
+export default rootReducer;
