@@ -5,6 +5,7 @@ import rootReducer from './reducers/anecdoteReducer';
 
 const App = () => {
   const anecdotes = useSelector(state => state.anecdotes.anecdotes);
+  const sortedAnecdotes = [...anecdotes].sort((a, b) => b.votes - a.votes);
   const dispatch = useDispatch();
   const [newAnecdote, setNewAnecdote] = useState('');
 
@@ -31,12 +32,13 @@ const App = () => {
   };
 
   const getId = () => (100000 * Math.random()).toFixed(0);
+  
 
   return (
     <div>
       <h2>Anecdotes</h2>
 
-      {anecdotes.map(anecdote =>
+      {sortedAnecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
