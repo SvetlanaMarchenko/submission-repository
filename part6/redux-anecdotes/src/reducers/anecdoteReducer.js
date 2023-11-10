@@ -42,4 +42,15 @@ const rootReducer = combineReducers({
   anecdotes: anecdoteReducer,
 });
 
+export const createAnecdote = (anecdote) => {
+  return {
+    type: 'NEW_ANECDOTE',
+    data: {
+      content: anecdote,
+      id: getId(),
+      votes: 0
+    }
+  }
+}
+
 export default rootReducer;
