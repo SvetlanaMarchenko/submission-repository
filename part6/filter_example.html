@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Notes App</title>
+</head>
+<body>
+
+<div>
+  <h2>Notes</h2>
+  <input type="text" id="filterInput" placeholder="Filter notes">
+  <ul id="notesList"></ul>
+</div>
+
+<script>
+  // Пример заметок
+  const notes = [
+    { id: 1, text: 'Buy groceries', category: 'Personal' },
+    { id: 2, text: 'Read a book', category: 'Personal' },
+    { id: 3, text: 'Learn JavaScript', category: 'Work' },
+    { id: 4, text: 'Write code', category: 'Work' },
+  ];
+
+  // Отрисовка заметок
+  function renderNotes(notes) {
+    const notesList = document.getElementById('notesList');
+    notesList.innerHTML = '';
+
+    notes.forEach((note) => {
+      const listItem = document.createElement('li');
+      listItem.textContent = `${note.text} - ${note.category}`;
+      notesList.appendChild(listItem);
+    });
+  }
+
+  // Фильтрация заметок
+  function filterNotes(filterText) {
+    const filteredNotes = notes.filter((note) =>
+      note.text.toLowerCase().includes(filterText.toLowerCase())
+    );
+    renderNotes(filteredNotes);
+  }
+
+  // Обработчик события для фильтрации при вводе
+  document.getElementById('filterInput').addEventListener('input', (event) => {
+    filterNotes(event.target.value);
+  });
+
+  // Инициализация - отображение всех заметок при загрузке страницы
+  renderNotes(notes);
+</script>
+
+</body>
+</html>

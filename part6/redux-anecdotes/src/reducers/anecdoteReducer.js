@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -7,8 +6,7 @@ const anecdotesAtStart = [
   'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
-
+];
 
 const getId = () => (100000 * Math.random()).toFixed(0);
 
@@ -19,7 +17,6 @@ const asObject = (anecdote) => ({
 });
 
 const initialState = anecdotesAtStart.map(asObject);
-
 
 const anecdoteReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -38,19 +35,15 @@ const anecdoteReducer = (state = initialState, action) => {
   }
 };
 
-const rootReducer = combineReducers({
-  anecdotes: anecdoteReducer,
-});
-
 export const createAnecdote = (anecdote) => {
   return {
     type: 'NEW_ANECDOTE',
     data: {
       content: anecdote,
       id: getId(),
-      votes: 0
-    }
-  }
-}
+      votes: 0,
+    },
+  };
+};
 
-export default rootReducer;
+export default anecdoteReducer;

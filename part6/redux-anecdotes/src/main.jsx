@@ -3,11 +3,11 @@ import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import anecdoteReducer from './reducers/anecdoteReducer';
-import anecdotesAddedReducer from './reducers/anecdoteReducer';
+import filterReducer from './reducers/filterReducer';
 
 const rootReducer = combineReducers({
   anecdotes: anecdoteReducer,
-  anecdotesAdded: anecdotesAddedReducer
+  filter: filterReducer
 });
 
 const store = createStore(rootReducer);
