@@ -1,32 +1,36 @@
-
+// AnecdoteList.jsx
+import { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { letsVote } from './reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
   const dispatch = useDispatch();
-  const anecdotes = useSelector((state) => {
-    // console.log("state is ", state)
-    const anecdotes =  state.anecdotes;
-    const filterText2 = state.filter;
-    if(filterText2 === "") return anecdotes;
 
-    const filteredAnecdotes = anecdotes.filter(anecdote => {
-      // console.log("Trying to filter anecdote with content ", anecdote.content,  "by filter text ", filterText2)
-      return anecdote.content.includes(filterText2)
-    })
-    // console.log("filteredAnecdotes:", filteredAnecdotes)
-    return filteredAnecdotes
-  });
+  const anecdotes = useSelector((state) => state.anecdotes.anecdotes);
+  const filterText = useSelector((state) => state.anecdotes.filter);
 
-  const sortedAnecdotes = [...anecdotes].sort((a, b) => b.votes - a.votes);
+  // Используем useMemo для мемоизации отфильтрованных анекдотов
+  const filteredAnecdotes = useMemo(() => {
+    if (filterText === "") return anecdotes;
 
+    const normalizedFilterText = filterText.toLowerCase();
+
+    return anecdotes.filter(anecdote => {
+      const normalizedContent = anecdote.content.toLowerCase();
+      return normalizedContent.includes(normalizedFilterText);
+    });
+  }, [anecdotes, filterText]);
+
+  // Сортируем отфильтрованные анекдоты по убыванию голосов
+  const sortedAnecdotes = [...filteredAnecdotes].sort((a, b) => b.votes - a.votes);
+
+  // Обработчик голосования
   const vote = (id) => {
     console.log('vote', id);
-    dispatch({
-      type: 'VOTE',          // Correct action type for voting
-      id: id,                // Include the ID of the voted anecdote
-    });
+    dispatch(letsVote({ id }));
   };
 
+  // Отображение отсортированных и отфильтрованных анекдотов
   return (
     <div>
       {sortedAnecdotes.map((anecdote) => (
