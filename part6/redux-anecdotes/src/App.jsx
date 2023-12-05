@@ -3,7 +3,7 @@ import AnecdoteForm from './AnecdoteForm'
 import AnecdoteList from './AnecdoteList'
 import Filter from './Filter'
 import { useDispatch } from 'react-redux'
-import anecdoteService from './services/anecdote'
+import anecdoteService from './Services/anecdote'
 import { setAnecdote } from './reducers/anecdoteReducer'
 
 const App = () => {

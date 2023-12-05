@@ -28,21 +28,17 @@ const anecdoteSlice = createSlice({
       }
     },
     createAnecdote(state, action) {
-      const newNoteText = action.payload;
-      state.anecdotes.push({
-        content: newNoteText,
-        id: getId(),
-        votes: 0,
-      });
+      const newAnecdote = action.payload
+      state.anecdotes.push(newAnecdote)
     },
     appendAnecdoteFilter(state, action) {
       state.filter = action.payload.filterText;
     },
     appendAnecdote(state, action) {
-      state.anecdotes.push(action.payload);
+      state.push(action.payload);
     },
     setAnecdote(state, action) {
-      state.anecdotes = action.payload;
+      state.anecdotes =  action.payload
     },
   },
 });
