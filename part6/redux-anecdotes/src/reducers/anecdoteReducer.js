@@ -32,7 +32,7 @@ const anecdoteSlice = createSlice({
       state.filter = action.payload.filterText;
     },
     appendAnecdote(state, action) {
-      state.push(action.payload);
+      state.anecdotes.push(action.payload);
     },
     setAnecdote(state, action) {
       state.anecdotes =  action.payload
@@ -56,6 +56,7 @@ export const createAnecdotes = content => {
   }
 }
 
-export const { createAnecdote, letsVote, appendAnecdoteFilter, appendAnecdote, setAnecdote } = anecdoteSlice.actions;
+
+export const {letsVote, appendAnecdoteFilter, appendAnecdote, setAnecdote } = anecdoteSlice.actions;
 
 export default anecdoteSlice.reducer;
