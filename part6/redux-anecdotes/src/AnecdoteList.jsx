@@ -25,7 +25,7 @@ const AnecdoteList = () => {
   const sortedAnecdotes = [...filteredAnecdotes].sort((a, b) => b.votes - a.votes);
 
   // Обработчик голосования
-  const vote = (id) => {
+  const votedAnecdote = (id) => {
     console.log('vote', id);
     dispatch(letsVote({ id }));
   };
@@ -36,10 +36,13 @@ const AnecdoteList = () => {
       {sortedAnecdotes.map((anecdote) => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
-          </div>
+          <form onSubmit={(e) => {
+              e.preventDefault();
+              votedAnecdote(anecdote.id);
+            }}>
+              <button type="submit">Vote</button>
+              has {anecdote.votes}
+            </form>
         </div>
       ))}
     </div>
