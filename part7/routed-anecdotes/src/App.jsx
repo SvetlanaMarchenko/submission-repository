@@ -21,8 +21,8 @@ const Menu = () => {
 }
 
 
-const Anecdote = ( anecdotes ) => {
-  const id = useParams().id;
+const Anecdote = ({ anecdotes }) => {
+  const { id } = useParams();
   const anecdote = anecdotes.find(n => n.id === Number(id));
   return (
     <div>
@@ -31,10 +31,7 @@ const Anecdote = ( anecdotes ) => {
   );
 };
 
-
-
-
-const AnecdoteList = ( anecdotes ) => (
+const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
@@ -46,7 +43,6 @@ const AnecdoteList = ( anecdotes ) => (
     </ul>
   </div>
 );
-
 
 
 
@@ -108,19 +104,19 @@ const AnecdoteList = ( anecdotes ) => (
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
-    {
+    { 
+      id: 1,
       content: 'If it hurts, do it more often',
       author: 'Jez Humble',
       info: 'https://martinfowler.com/bliki/FrequencyReducesDifficulty.html',
-      votes: 0,
-      id: 1
+      votes: 0
     },
     {
+      id: 2,
       content: 'Premature optimization is the root of all evil',
       author: 'Donald Knuth',
       info: 'http://wiki.c2.com/?PrematureOptimization',
-      votes: 0,
-      id: 2
+      votes: 0
     }
   ])
 
@@ -178,13 +174,13 @@ const App = () => {
   )
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+// ReactDOM.createRoot(document.getElementById('root')).render(
 
-  <Router>
-    <App />
+//   <Router>
+//     <App />
   
-  </Router>
-)
+//   </Router>
+// )
 
 
 
