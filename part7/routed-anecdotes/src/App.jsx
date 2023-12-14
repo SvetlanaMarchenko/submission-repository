@@ -27,6 +27,8 @@ const Anecdote = ({ anecdotes }) => {
   return (
     <div>
       <h2>{anecdote.content}</h2>
+      <p>has {anecdote.votes} votes </p>
+      <p>For more info, see <a href={anecdote.info}>{anecdote.info}</a></p>
     </div>
   );
 };
@@ -61,46 +63,46 @@ const About = () => (
 )
 
 
-// const CreateNew = (props) => {
-//   const [content, setContent] = useState('')
-//   const [author, setAuthor] = useState('')
-//   const [info, setInfo] = useState('')
+const CreateNew = (props) => {
+  const [content, setContent] = useState('')
+  const [author, setAuthor] = useState('')
+  const [info, setInfo] = useState('')
 
 
-//   const handleSubmit = (e) => {
-//     e.preventDefault()
-//     props.addNew({
-//       content,
-//       author,
-//       info,
-//       votes: 0
-//     })
-//   }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    props.addNew({
+      content,
+      author,
+      info,
+      votes: 0
+    })
+  }
 
 
 
-//   return (
-//     <div>
-//       <h2>create a new anecdote</h2>
-//       <form onSubmit={handleSubmit}>
-//         <div>
-//           content
-//           <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
-//         </div>
-//         <div>
-//           author
-//           <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
-//         </div>
-//         <div>
-//           url for more info
-//           <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
-//         </div>
-//         <button>create</button>
-//       </form>
-//     </div>
-//   )
+  return (
+    <div>
+      <h2>create a new anecdote</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          content
+          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+        </div>
+        <div>
+          author
+          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+        </div>
+        <div>
+          url for more info
+          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+        </div>
+        <button>create</button>
+      </form>
+    </div>
+  )
 
-// }
+}
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -124,26 +126,26 @@ const App = () => {
     paddingRight: 5
   }
 
-  // const [notification, setNotification] = useState('')
+  const [notification, setNotification] = useState('')
 
-  // const addNew = (anecdote) => {
-  //   anecdote.id = Math.round(Math.random() * 10000)
-  //   setAnecdotes(anecdotes.concat(anecdote))
-  // }
+  const addNew = (anecdote) => {
+    anecdote.id = Math.round(Math.random() * 10000)
+    setAnecdotes(anecdotes.concat(anecdote))
+  }
 
-  // const anecdoteById = (id) =>
-  //   anecdotes.find(a => a.id === id)
+  const anecdoteById = (id) =>
+    anecdotes.find(a => a.id === id)
 
-  // const vote = (id) => {
-  //   const anecdote = anecdoteById(id)
+  const vote = (id) => {
+    const anecdote = anecdoteById(id)
 
-  //   const voted = {
-  //     ...anecdote,
-  //     votes: anecdote.votes + 1
-  //   }
+    const voted = {
+      ...anecdote,
+      votes: anecdote.votes + 1
+    }
 
-  //   setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
-  // }
+    setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
+  }
 
   return (
     <div>
@@ -151,14 +153,14 @@ const App = () => {
         <div>
           <Link style={padding} to="/">Menu</Link>
           <Link style={padding} to="/anecdotes">anecdotes</Link>
-          {/* <Link style={padding} to="/createNew">create new</Link> */}
+          <Link style={padding} to="/createNew">create new</Link>
           <Link style={padding} to="/about">about</Link>
         </div>
       
         <Routes>
           <Route path="/anecdotes/:id" element={<Anecdote anecdotes={anecdotes} />} />
           <Route path="/anecdotes" element={<AnecdoteList anecdotes={anecdotes} />} />
-          {/* <Route path="/createNew" element={<CreateNew addNew={addNew} />} /> */}
+          <Route path="/createNew" element={<CreateNew addNew={addNew} />} />
           <Route path="/about" element= {<About />} />
           <Route path="/" element={<Menu />} />
         </Routes>
@@ -182,8 +184,5 @@ const App = () => {
 //   </Router>
 // )
 
-
-
-{/* <Footer />   */}
 
 export default App
