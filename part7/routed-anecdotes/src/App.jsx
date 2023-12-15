@@ -24,6 +24,16 @@ const Menu = () => {
 const Anecdote = ({ anecdotes }) => {
   const { id } = useParams();
   const anecdote = anecdotes.find(n => n.id === Number(id));
+
+  // Check if anecdote is undefined before accessing its properties
+  if (!anecdote) {
+    return (
+      <div>
+        <p>Anecdote not found</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h2>{anecdote.content}</h2>
@@ -77,8 +87,11 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
-  }
 
+    setContent('');
+    setAuthor('');
+    setInfo('');
+  }
 
 
   return (
@@ -97,7 +110,7 @@ const CreateNew = (props) => {
           url for more info
           <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
         </div>
-        <button>create</button>
+        <button type="submit"> create</button>
       </form>
     </div>
   )
@@ -128,10 +141,20 @@ const App = () => {
 
   const [notification, setNotification] = useState('')
 
+  
+
+
   const addNew = (anecdote) => {
-    anecdote.id = Math.round(Math.random() * 10000)
-    setAnecdotes(anecdotes.concat(anecdote))
-  }
+    anecdote.id = Math.round(Math.random() * 10000);
+    setAnecdotes(anecdotes.concat(anecdote));
+
+    // Set the notification message
+    setNotification(`A new anecdote "${anecdote.content}" created!`);
+
+    // Clear the notification after 5 seconds
+    setTimeout(() => {
+      setNotification('');
+    }, 5000);
 
   const anecdoteById = (id) =>
     anecdotes.find(a => a.id === id)
@@ -145,6 +168,7 @@ const App = () => {
     }
 
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
+  }
   }
 
   return (
@@ -166,6 +190,7 @@ const App = () => {
         </Routes>
       </Router>
       <div>
+        {notification && <p>{notification}</p>}
         <br />
         <em>
           Anecdote app for <a href='https://fullstackopen.com/'>Full Stack Open</a>.
@@ -175,14 +200,5 @@ const App = () => {
     </div>
   )
 }
-
-// ReactDOM.createRoot(document.getElementById('root')).render(
-
-//   <Router>
-//     <App />
-  
-//   </Router>
-// )
-
 
 export default App
